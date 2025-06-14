@@ -10,14 +10,12 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
 import { SettingItem } from '@/features/setting/components/setting-item'
 import { SectionHeader } from '@/features/setting/components/setion-header.tsx'
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 export default function SettingsScreen() {
-  const handleLogout = () => {
-    router.replace('/(auth)/login')
-  }
+  const { logout } = useAuth()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -167,7 +165,7 @@ export default function SettingsScreen() {
         </View>
 
         <View style={styles.logoutContainer}>
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Ionicons name="log-out-outline" size={20} color="#f43f5e" />
             <Text style={styles.logoutText}>Cerrar sesión</Text>
           </TouchableOpacity>

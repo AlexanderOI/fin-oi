@@ -15,16 +15,42 @@ import { Link, router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { Colors } from '@/constants/Colors'
-import Header from '@/features/auth/components/header'
+import { Header } from '@/features/auth/components/header'
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { InputContainer } from '@/features/auth/components/input-container'
+import { AuthIcon } from '@/features/auth/components/auth-icon'
+
+const loginSchema = z.object({
+  username: z.string().min(1, { message: 'El nombre de usuario es requerido' }),
+  password: z.string().min(1, { message: 'La contraseña es requerida' }),
+})
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { login } = useAuth()
+
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleLogin = () => {
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  })
+
+  const handleLogin = form.handleSubmit(async data => {
+    const response = await login(data.username, data.password)
+    if (!response) {
+      form.setError('username', { message: 'Credenciales incorrectas' })
+      return
+    }
+
     router.replace('/(app)')
-  }
+  })
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -42,64 +68,74 @@ export default function LoginScreen() {
           >
             <Header />
 
-            <View className="w-full">
-              <View className="flex-row items-center bg-white rounded-2xl mb-4 px-4 h-14 shadow-lg">
-                <Ionicons
-                  name="mail-outline"
-                  size={20}
-                  color={Colors.light.blueGray}
-                  className="mr-3"
+            <Form {...form}>
+              <View className="w-full">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({
+                    field: { onChange, value, ...field },
+                    fieldState: { error },
+                  }) => (
+                    <FormItem>
+                      <InputContainer error={error?.message}>
+                        <AuthIcon name="person-outline" />
+                        <FormControl
+                          placeholder="Nombre"
+                          onChangeText={onChange}
+                          value={value}
+                          {...field}
+                        />
+                      </InputContainer>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <TextInput
-                  className="flex-1 text-base text-gray-700"
-                  placeholder="Correo electrónico"
-                  placeholderTextColor={Colors.light.blueGray}
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              </View>
 
-              <View className="flex-row items-center bg-white rounded-2xl mb-4 px-4 h-14 shadow-lg">
-                <Ionicons
-                  name="lock-closed-outline"
-                  size={20}
-                  color={Colors.light.blueGray}
-                  className="mr-3"
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({
+                    field: { onChange, value, ...field },
+                    fieldState: { error },
+                  }) => (
+                    <FormItem>
+                      <InputContainer error={error?.message}>
+                        <AuthIcon name="lock-closed-outline" />
+                        <FormControl
+                          placeholder="Contraseña"
+                          onChangeText={onChange}
+                          value={value}
+                          secureTextEntry={!showPassword}
+                          {...field}
+                        />
+                        <TouchableOpacity
+                          className="p-2"
+                          onPress={() => setShowPassword(!showPassword)}
+                        >
+                          <AuthIcon
+                            name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                          />
+                        </TouchableOpacity>
+                      </InputContainer>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <TextInput
-                  className="flex-1 text-base text-gray-700"
-                  placeholder="Contraseña"
-                  placeholderTextColor={Colors.light.blueGray}
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry={!showPassword}
-                />
-                <TouchableOpacity
-                  className="p-2"
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Ionicons
-                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                    size={20}
-                    color={Colors.light.blueGray}
-                  />
-                </TouchableOpacity>
-              </View>
 
-              {/* <TouchableOpacity style={styles.forgotPassword} onPress={() => {}}>
+                {/* <TouchableOpacity style={styles.forgotPassword} onPress={() => {}}>
                 <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
               </TouchableOpacity> */}
 
-              <TouchableOpacity
-                className="bg-primary rounded-2xl h-14 items-center justify-center shadow-lg"
-                onPress={handleLogin}
-                activeOpacity={0.8}
-              >
-                <Text className="text-white text-lg font-bold">Iniciar Sesión</Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-lg"
+                  onPress={handleLogin}
+                  activeOpacity={0.8}
+                >
+                  <Text className="text-white text-lg font-bold">Iniciar Sesión</Text>
+                </TouchableOpacity>
+              </View>
+            </Form>
 
             <View className="flex-row mt-6">
               <Text className="text-gray-500 text-lg">¿No tienes una cuenta? </Text>
