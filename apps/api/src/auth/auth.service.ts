@@ -100,12 +100,12 @@ export class AuthService {
   async checkUserData(username?: string, email?: string) {
     if (username) {
       const user = await this.prismaService.user.findUnique({ where: { username } })
-      if (user) throw new ConflictException('User already exists')
+      if (user) throw new ConflictException({ username: 'User already exists' })
     }
 
     if (email) {
       const userByEmail = await this.prismaService.user.findUnique({ where: { email } })
-      if (userByEmail) throw new ConflictException('Email already exists')
+      if (userByEmail) throw new ConflictException({ email: 'Email already exists' })
     }
 
     return { message: 'User data is valid' }
