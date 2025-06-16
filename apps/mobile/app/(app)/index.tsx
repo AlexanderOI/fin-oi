@@ -6,12 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  Image,
 } from 'react-native'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { Transaction } from '@/features/transactions/interfaces/transaction.interface'
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import { TransactionCard } from '@/features/transactions/components/transaction-card'
 
 const expenseCategories = [
   {
@@ -72,31 +73,15 @@ const recentTransactions: Transaction[] = [
   },
 ]
 
-const TransactionCard = ({ transaction }: { transaction: Transaction }) => (
-  <View style={styles.transactionCard}>
-    <View style={[styles.iconContainer, { backgroundColor: `${transaction.color}20` }]}>
-      <Ionicons name={transaction.icon} size={20} color={transaction.color} />
-    </View>
-    <View style={styles.transactionInfo}>
-      <Text style={styles.transactionCategory}>{transaction.category}</Text>
-      <Text style={styles.transactionDescription}>{transaction.description}</Text>
-    </View>
-    <View style={styles.transactionAmount}>
-      <Text
-        style={[
-          styles.amountText,
-          { color: transaction.amount >= 0 ? '#84cc16' : '#f43f5e' },
-        ]}
-      >
-        {transaction.amount >= 0 ? '+' : ''}
-        {transaction.amount}€
-      </Text>
-      <Text style={styles.dateText}>{transaction.date}</Text>
-    </View>
-  </View>
-)
+const date = new Date().toLocaleDateString('es-ES', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+})
 
 export default function DashboardScreen() {
+  const { user } = useAuth()
+
   const totalExpenses = expenseCategories.reduce(
     (sum, category) => sum + category.amount,
     0,
@@ -111,8 +96,8 @@ export default function DashboardScreen() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>Hola, Carlos</Text>
-            <Text style={styles.date}>15 Junio, 2025</Text>
+            <Text style={styles.greeting}>Hola, {user?.username}</Text>
+            <Text style={styles.date}>{date}</Text>
           </View>
           <TouchableOpacity style={styles.profileButton}>
             <Ionicons name="person-circle-outline" size={40} color="#6366f1" />
@@ -381,52 +366,7 @@ const styles = StyleSheet.create({
   transactionsContainer: {
     paddingHorizontal: 20,
   },
-  transactionCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  transactionInfo: {
-    flex: 1,
-  },
-  transactionCategory: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1e293b',
-    marginBottom: 4,
-  },
-  transactionDescription: {
-    fontSize: 12,
-    color: '#64748b',
-  },
-  transactionAmount: {
-    alignItems: 'flex-end',
-  },
-  amountText: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  dateText: {
-    fontSize: 12,
-    color: '#64748b',
-  },
+
   footer: {
     height: 100,
   },

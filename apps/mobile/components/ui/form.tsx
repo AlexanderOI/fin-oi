@@ -10,6 +10,7 @@ import {
   useFormContext,
 } from 'react-hook-form'
 import { Colors } from '@/constants/Colors'
+import { cn } from '@/lib/cn'
 
 // Contextos
 type FormFieldContextValue<
@@ -47,7 +48,7 @@ export const FormItem = ({ children, style, ...props }: ViewProps) => {
   const id = useId()
   return (
     <FormItemContext.Provider value={{ id }}>
-      <View style={[{ marginBottom: 16 }, style]} {...props}>
+      <View className={cn('mb-4', props.className)} style={style} {...props}>
         {children}
       </View>
     </FormItemContext.Provider>
@@ -57,32 +58,30 @@ export const FormItem = ({ children, style, ...props }: ViewProps) => {
 export const FormLabel = ({ children, style, ...props }: TextProps) => {
   const { error } = useFormField()
   return (
-    <Text
-      style={[
-        { fontWeight: 'bold', marginBottom: 4, color: error ? 'red' : '#333' },
-        style,
-      ]}
-      {...props}
-    >
+    <Text style={[{ marginBottom: 4, color: error ? 'red' : '#333' }, style]} {...props}>
       {children}
     </Text>
   )
 }
 
-export const FormControl = (props: TextInputProps) => {
+interface FormControlProps extends TextInputProps {
+  className?: string
+  custom?: boolean
+}
+
+export const FormControl = ({ custom = false, ...props }: FormControlProps) => {
   const { error } = useFormField()
   return (
     <TextInput
-      className="flex-1 text-base text-gray-700"
+      className={cn('text-base text-gray-700', props.className)}
       placeholderTextColor={Colors.light.blueGray}
       style={[
         {
-          borderWidth: 0,
+          borderWidth: custom ? 0 : 1,
           borderColor: error ? 'red' : '#ccc',
           borderRadius: 8,
-          padding: 0,
+          padding: custom ? 0 : 10,
         },
-
         props.style,
       ]}
       {...props}

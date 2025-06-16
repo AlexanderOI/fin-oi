@@ -1,27 +1,31 @@
-import { Redirect, Tabs } from 'expo-router'
+import { useEffect } from 'react'
+import { router, Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { IconName } from '@/global'
 
 export default function AppLayout() {
   const { user } = useAuth()
 
-  if (!user) {
-    return <Redirect href="/(auth)/login" />
-  }
+  useEffect(() => {
+    if (!user) {
+      router.replace('/(auth)/login')
+    }
+  }, [user])
 
   return (
     <Tabs
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName: keyof typeof Ionicons.glyphMap = 'home'
+          let iconName: IconName = 'home'
 
           if (route.name === 'index') {
             iconName = focused ? 'home' : 'home-outline'
           } else if (route.name === 'transactions') {
             iconName = focused ? 'list' : 'list-outline'
-          } else if (route.name === 'summary/index') {
+          } else if (route.name === 'summary') {
             iconName = focused ? 'bar-chart' : 'bar-chart-outline'
-          } else if (route.name === 'settings/index') {
+          } else if (route.name === 'settings') {
             iconName = focused ? 'settings' : 'settings-outline'
           }
 
@@ -53,8 +57,8 @@ export default function AppLayout() {
     >
       <Tabs.Screen name="index" options={{ title: 'Inicio' }} />
       <Tabs.Screen name="transactions" options={{ title: 'Transacciones' }} />
-      <Tabs.Screen name="summary/index" options={{ title: 'Resumen' }} />
-      <Tabs.Screen name="settings/index" options={{ title: 'Ajustes' }} />
+      <Tabs.Screen name="summary" options={{ title: 'Resumen' }} />
+      <Tabs.Screen name="settings" options={{ title: 'Ajustes' }} />
     </Tabs>
   )
 }

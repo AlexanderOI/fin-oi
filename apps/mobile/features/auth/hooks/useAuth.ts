@@ -5,7 +5,8 @@ import { AxiosError } from 'axios'
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false)
-  const { setAuth, logout, user, isAuthenticated } = useAuthStore()
+  const { setAuth, logout, user, isAuthenticated, expiresIn, refreshToken } =
+    useAuthStore()
 
   const handleLogin = async (username: string, password: string) => {
     try {
@@ -15,6 +16,7 @@ export const useAuth = () => {
         response.user,
         response.backendTokens.accessToken,
         response.backendTokens.refreshToken,
+        response.backendTokens.expiresIn,
       )
       return true
     } catch (err) {
@@ -41,6 +43,16 @@ export const useAuth = () => {
     }
   }
 
+  const handleRefreshToken = async () => {
+    try {
+      if (!user || !refreshToken) return logout()
+      const response = await authService.refreshToken(refreshToken)
+      setAuth(user, response.accessToken, response.refreshToken, response.expiresIn)
+    } catch (err) {
+      return logout()
+    }
+  }
+
   const handleLogout = () => {
     logout()
   }
@@ -64,10 +76,12 @@ export const useAuth = () => {
   return {
     user,
     isAuthenticated,
+    expiresIn,
     loading,
     login: handleLogin,
     register: handleRegister,
     logout: handleLogout,
     checkUserData,
+    refreshToken: handleRefreshToken,
   }
 }

@@ -6,7 +6,7 @@ import { useAuthStore } from '@/features/auth/store/auth.store'
 const apiClient = axios.create({
   baseURL: API_URL,
 })
-console.log(API_URL)
+
 apiClient.interceptors.request.use(
   async config => {
     const { accessToken } = useAuthStore.getState()

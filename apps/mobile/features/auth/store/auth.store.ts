@@ -7,8 +7,14 @@ interface AuthState {
   user: User | null
   accessToken: string | null
   refreshToken: string | null
+  expiresIn: number | null
   isAuthenticated: boolean
-  setAuth: (user: User, accessToken: string, refreshToken: string) => void
+  setAuth: (
+    user: User,
+    accessToken: string,
+    refreshToken: string,
+    expiresIn: number,
+  ) => void
   logout: () => void
   updateUser: (user: User) => void
 }
@@ -19,12 +25,14 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       accessToken: null,
       refreshToken: null,
+      expiresIn: null,
       isAuthenticated: false,
-      setAuth: (user, accessToken, refreshToken) =>
+      setAuth: (user, accessToken, refreshToken, expiresIn) =>
         set({
           user,
           accessToken,
           refreshToken,
+          expiresIn,
           isAuthenticated: true,
         }),
       logout: () =>
@@ -32,6 +40,7 @@ export const useAuthStore = create<AuthState>()(
           user: null,
           accessToken: null,
           refreshToken: null,
+          expiresIn: null,
           isAuthenticated: false,
         }),
       updateUser: user =>

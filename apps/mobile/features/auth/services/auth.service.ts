@@ -38,11 +38,7 @@ export const authService = {
 
   async register(credentials: RegisterCredentials): Promise<{ message: string }> {
     try {
-      console.log('Intentando registro con credenciales:', credentials)
-      console.log('URL de la petición:', `${this.baseUrl}/register`)
-
       const response = await axios.post(`${this.baseUrl}/register`, credentials)
-      console.log('Respuesta del servidor:', response.data)
       return response.data
     } catch (error) {
       console.error('Error en el registro:', error)
