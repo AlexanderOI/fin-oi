@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
@@ -12,24 +11,16 @@ import {
 } from 'react-native'
 import { Link, router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 import { useAuth } from '@/features/auth/hooks/useAuth'
 
-import { Colors } from '@/constants/Colors'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Header } from '@/features/auth/components/header'
 import { AuthIcon } from '@/features/auth/components/auth-icon'
 import { InputContainer } from '@/features/auth/components/input-container'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
 
 const registerSchema = z
   .object({
@@ -132,6 +123,8 @@ export default function RegisterScreen() {
                         <AuthIcon name="person-outline" />
                         <FormControl
                           placeholder="Nombre"
+                          custom
+                          className="flex-1"
                           onChangeText={onChange}
                           value={value}
                           {...field}
@@ -156,6 +149,8 @@ export default function RegisterScreen() {
                           placeholder="Correo electrónico"
                           keyboardType="email-address"
                           autoCapitalize="none"
+                          custom
+                          className="flex-1"
                           onChangeText={onChange}
                           value={value}
                           {...field}
@@ -178,6 +173,8 @@ export default function RegisterScreen() {
                         <AuthIcon name="lock-closed-outline" />
                         <FormControl
                           placeholder="Contraseña"
+                          custom
+                          className="flex-1"
                           onChangeText={onChange}
                           value={value}
                           secureTextEntry={!showPassword}
@@ -209,6 +206,8 @@ export default function RegisterScreen() {
                         <AuthIcon name="lock-closed-outline" />
                         <FormControl
                           placeholder="Confirmar contraseña"
+                          custom
+                          className="flex-1"
                           onChangeText={onChange}
                           value={value}
                           secureTextEntry={!showConfirmPassword}
@@ -241,7 +240,7 @@ export default function RegisterScreen() {
             <View className="flex-row mt-6">
               <Text className="text-gray-500 text-lg">¿Ya tienes una cuenta? </Text>
               <TouchableOpacity onPress={() => {}}>
-                <Link href="/login" asChild>
+                <Link href="/(auth)/login" asChild>
                   <Text className="text-primary text-lg font-medium">Iniciar Sesión</Text>
                 </Link>
               </TouchableOpacity>

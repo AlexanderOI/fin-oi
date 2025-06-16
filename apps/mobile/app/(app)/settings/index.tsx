@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { SettingItem } from '@/features/setting/components/setting-item'
 import { SectionHeader } from '@/features/setting/components/setion-header.tsx'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { router } from 'expo-router'
 
 export default function SettingsScreen() {
   const { logout } = useAuth()
@@ -134,6 +135,7 @@ export default function SettingsScreen() {
 
         <View style={styles.settingsGroup}>
           <SettingItem
+            onPress={() => router.push('/settings/category')}
             icon="file-tray-full-outline"
             iconColor="#f59e0b"
             title="Categorías"

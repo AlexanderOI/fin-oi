@@ -1,12 +1,12 @@
 import { Stack } from 'expo-router'
 
-export default function TransactionsLayout() {
+export default function SettingsLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="index"
         options={{
-          title: 'Transacciones',
+          title: 'Ajustes',
           headerStyle: {
             backgroundColor: '#ffffff',
           },
@@ -14,10 +14,9 @@ export default function TransactionsLayout() {
         }}
       />
       <Stack.Screen
-        name="new"
+        name="category"
         options={{
-          title: 'Nueva Transacción',
-          presentation: 'modal',
+          title: 'Categorías',
           headerStyle: {
             backgroundColor: '#ffffff',
           },

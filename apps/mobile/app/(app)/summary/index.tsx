@@ -6,6 +6,7 @@ import { BarChart } from '@/features/summary/bar-chart'
 import { CategoryRankingItem } from '@/features/summary/category-ranking-Item'
 import { CategoryRanking } from '@/features/transactions/interfaces/category.interfaces'
 import { MonthlyData } from '@/features/dashboard/interface/data.interface'
+import { HeaderScreen } from '@/components/common/header-screen'
 
 const monthlyData: MonthlyData[] = [
   { month: 'Ene', income: 2500, expenses: 1800 },
@@ -74,14 +75,8 @@ export default function SummaryScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <HeaderScreen title="Resumen" icon="calendar-outline" />
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Resumen</Text>
-          <TouchableOpacity style={styles.calendarButton}>
-            <Ionicons name="calendar-outline" size={22} color="#6366f1" />
-          </TouchableOpacity>
-        </View>
-
         <View style={styles.balanceCard}>
           <View style={styles.periodSelector}>
             <TouchableOpacity

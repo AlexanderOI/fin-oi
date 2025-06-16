@@ -2,25 +2,23 @@ import React, { useState } from 'react'
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  Image,
   ScrollView,
 } from 'react-native'
 import { Link, router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Ionicons } from '@expo/vector-icons'
-import { Colors } from '@/constants/Colors'
-import { Header } from '@/features/auth/components/header'
-import { useAuth } from '@/features/auth/hooks/useAuth'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+
+import { useAuth } from '@/features/auth/hooks/useAuth'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Header } from '@/features/auth/components/header'
+
 import { InputContainer } from '@/features/auth/components/input-container'
 import { AuthIcon } from '@/features/auth/components/auth-icon'
 
@@ -81,6 +79,8 @@ export default function LoginScreen() {
                       <InputContainer error={error?.message}>
                         <AuthIcon name="person-outline" />
                         <FormControl
+                          custom
+                          className="flex-1"
                           placeholder="Nombre"
                           onChangeText={onChange}
                           value={value}
@@ -103,6 +103,8 @@ export default function LoginScreen() {
                       <InputContainer error={error?.message}>
                         <AuthIcon name="lock-closed-outline" />
                         <FormControl
+                          custom
+                          className="flex-1"
                           placeholder="Contraseña"
                           onChangeText={onChange}
                           value={value}
@@ -140,7 +142,7 @@ export default function LoginScreen() {
             <View className="flex-row mt-6">
               <Text className="text-gray-500 text-lg">¿No tienes una cuenta? </Text>
               <TouchableOpacity onPress={() => {}}>
-                <Link href="/register" asChild>
+                <Link href="/(auth)/register" asChild>
                   <Text className="text-primary text-lg font-medium">Regístrate</Text>
                 </Link>
               </TouchableOpacity>

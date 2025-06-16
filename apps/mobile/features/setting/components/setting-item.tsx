@@ -1,7 +1,13 @@
 import { Ionicons } from '@expo/vector-icons'
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  TouchableOpacityProps,
+} from 'react-native'
 
-interface Props {
+interface Props extends TouchableOpacityProps {
   icon: keyof typeof Ionicons.glyphMap
   iconColor: string
   title: string
@@ -15,8 +21,9 @@ export const SettingItem = ({
   title,
   description,
   rightElement,
+  ...props
 }: Props) => (
-  <TouchableOpacity style={styles.settingItem}>
+  <TouchableOpacity style={styles.settingItem} {...props}>
     <View style={[styles.settingIcon, { backgroundColor: `${iconColor}15` }]}>
       <Ionicons name={icon} size={20} color={iconColor} />
     </View>
