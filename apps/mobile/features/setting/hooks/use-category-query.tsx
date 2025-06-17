@@ -22,6 +22,13 @@ export const useCategoryQuery = (id?: string) => {
     queryFn: () => getCategoryById(id),
   })
 
+  const handlePrefetchCategory = (id: string) => {
+    queryClient.prefetchQuery({
+      queryKey: ['category', id],
+      queryFn: () => getCategoryById(id),
+    })
+  }
+
   const invalidateCategoriesQuery = () => {
     queryClient.invalidateQueries({ queryKey: ['categories'] })
   }
@@ -60,5 +67,6 @@ export const useCategoryQuery = (id?: string) => {
     handleCreateCategory,
     handleUpdateCategory,
     handleDeleteCategory,
+    handlePrefetchCategory,
   }
 }

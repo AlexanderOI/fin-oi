@@ -14,7 +14,7 @@ export default function SettingsLayout() {
         }}
       />
       <Stack.Screen
-        name="category"
+        name="category/index"
         options={{
           title: 'Categorías',
           headerStyle: {

@@ -1,96 +1,100 @@
-import React, { useRef } from 'react'
-import { View, Text, PanResponder, Animated } from 'react-native'
-import Modal from 'react-native-modal'
+import React, { createContext, useState, useContext } from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import ModalRN from 'react-native-modal'
 import { Colors } from '@/constants/Colors'
 
+interface ModalContextType {
+  isVisible: boolean
+  openModal: () => void
+  closeModal: () => void
+}
+
+const ModalContext = createContext<ModalContextType | undefined>(undefined)
+
+export const useModal = () => {
+  const context = useContext(ModalContext)
+  if (!context) {
+    throw new Error('useModal use with in a ModalProvider')
+  }
+  return context
+}
+
+interface ModalProviderProps {
+  children: React.ReactNode
+}
+
+export const Modal = ({ children }: ModalProviderProps) => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const openModal = () => setIsVisible(true)
+  const closeModal = () => setIsVisible(false)
+
+  return (
+    <ModalContext.Provider value={{ isVisible, openModal, closeModal }}>
+      {children}
+    </ModalContext.Provider>
+  )
+}
+
 interface ModalProps {
-  visible: boolean
-  onClose: () => void
+  visible?: boolean
+  onClose?: () => void
   title: string
   children: React.ReactNode
-  isLoading?: boolean
+  showChildrenOnModalShow?: boolean
   skeleton?: React.ReactNode
 }
 
-export function ModalComponent({
-  visible,
-  onClose,
+export function ModalContent({
+  visible: externalVisible,
+  onClose: externalOnClose,
   title,
   children,
-  isLoading,
   skeleton,
+  showChildrenOnModalShow = true,
 }: ModalProps) {
-  const panY = useRef(new Animated.Value(0)).current
+  const [isContentVisible, setIsContentVisible] = useState(showChildrenOnModalShow)
+  const { isVisible: contextVisible, closeModal: contextCloseModal } = useModal()
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dy > 10,
-      onPanResponderMove: (evt, gestureState) => {
-        if (gestureState.dy > 0) {
-          panY.setValue(gestureState.dy)
-        }
-      },
-      onPanResponderRelease: (_, gestureState) => {
-        if (gestureState.dy > 50) {
-          onClose()
-        } else {
-          Animated.spring(panY, {
-            toValue: 0,
-            useNativeDriver: false,
-          }).start()
-        }
-      },
-    }),
-  ).current
+  const isVisible = externalVisible ?? contextVisible
+  const handleClose = externalOnClose ?? contextCloseModal
 
   return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={onClose}
+    <ModalRN
+      isVisible={isVisible}
+      onBackdropPress={handleClose}
+      onSwipeComplete={handleClose}
+      onModalShow={() => {
+        setIsContentVisible(true)
+      }}
+      onModalHide={() => {
+        setIsContentVisible(false)
+      }}
+      swipeDirection="down"
       style={{ justifyContent: 'flex-end', margin: 0 }}
       backdropOpacity={0.5}
       animationIn="slideInUp"
       animationOut="slideOutDown"
       propagateSwipe
-      swipeDirection={[]}
     >
-      <Animated.View
-        style={{
-          backgroundColor: Colors.light.background,
-          borderTopLeftRadius: 24,
-          borderTopRightRadius: 24,
-          paddingHorizontal: 20,
-          minHeight: '70%',
-          transform: [{ translateY: panY }],
-        }}
+      <View
+        className="rounded-t-3xl p-5 min-h-[70%]"
+        style={{ backgroundColor: Colors.light.background }}
       >
-        <View
-          {...panResponder.panHandlers}
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: 15,
-          }}
-        >
-          <View
-            style={{
-              width: 80,
-              height: 6,
-              backgroundColor: '#ccc',
-              borderRadius: 3,
-            }}
-          />
+        <View className="w-20 h-1.5 bg-gray-300 rounded-full self-center mb-4" />
+
+        <View className="flex-row justify-between items-center mb-4">
+          <Text className="text-xl font-bold">{title}</Text>
+          <TouchableOpacity onPress={handleClose}>
+            <Text className="text-gray-500">Cerrar</Text>
+          </TouchableOpacity>
         </View>
 
-        <View style={{ marginBottom: 15 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
-            {title}
-          </Text>
+        <View className="flex-1">
+          {isContentVisible && isVisible && children}
+          {skeleton && !isContentVisible && isVisible && skeleton}
         </View>
-
-        <View style={{ flex: 1 }}>{visible && isLoading ? skeleton : children}</View>
-      </Animated.View>
-    </Modal>
+      </View>
+    </ModalRN>
   )
 }

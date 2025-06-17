@@ -1,10 +1,15 @@
 import { View, ScrollView } from 'react-native'
-import { categoriesIcons, COLORS } from '@/features/setting/constants/categories'
 import { Skeleton } from '@/components/ui/skeleton'
+
+const SkeletonIcon = () => {
+  return <Skeleton className="w-12 h-12 rounded-full" />
+}
 
 export const CategoryFormSkeleton = () => {
   return (
     <View>
+      <Skeleton className="w-1/2 h-5 mb-2" />
+
       <Skeleton className="w-full h-14 mb-4" />
       <View className="gap-4 mb-4">
         <Skeleton className="w-1/2 h-5 mb-2" />
@@ -14,9 +19,12 @@ export const CategoryFormSkeleton = () => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 10 }}
           >
-            {COLORS.map(color => (
-              <Skeleton key={color} className="w-12 h-12 rounded-full" />
-            ))}
+            <SkeletonIcon />
+            <SkeletonIcon />
+            <SkeletonIcon />
+            <SkeletonIcon />
+            <SkeletonIcon />
+            <SkeletonIcon />
           </ScrollView>
         </View>
 
@@ -31,12 +39,12 @@ export const CategoryFormSkeleton = () => {
             <View className="gap-3">
               {[0, 1, 2].map(row => (
                 <View key={row} className="flex-row gap-3">
-                  {categoriesIcons.slice(row * 8, (row + 1) * 8).map(category => (
-                    <Skeleton
-                      key={category.icon}
-                      className="w-12 h-12 rounded-full"
-                    ></Skeleton>
-                  ))}
+                  <SkeletonIcon />
+                  <SkeletonIcon />
+                  <SkeletonIcon />
+                  <SkeletonIcon />
+                  <SkeletonIcon />
+                  <SkeletonIcon />
                 </View>
               ))}
             </View>
