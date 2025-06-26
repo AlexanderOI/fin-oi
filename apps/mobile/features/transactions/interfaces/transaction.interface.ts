@@ -1,11 +1,13 @@
-import { Ionicons } from '@expo/vector-icons'
+import { Category } from '@/features/setting/interfaces/category.interface'
 
 export interface Transaction {
   id: string
-  category: string
-  description: string
   amount: number
-  date: string // TODO: cambiar a date luego
-  icon: keyof typeof Ionicons.glyphMap
-  color: string
+  type: string
+  categoryId: string
+  category: Category
+  description?: string
+  date: Date
+  createdAt: Date
+  updatedAt: Date
 }

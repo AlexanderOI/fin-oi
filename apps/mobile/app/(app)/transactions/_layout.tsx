@@ -14,10 +14,9 @@ export default function TransactionsLayout() {
         }}
       />
       <Stack.Screen
-        name="new"
+        name="new/index"
         options={{
           title: 'Nueva Transacción',
-          presentation: 'modal',
           headerStyle: {
             backgroundColor: '#ffffff',
           },

@@ -1,0 +1,94 @@
+import React from 'react'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { cn } from '@/lib/cn'
+import { FilterChip } from '../../../components/ui/filter-chip'
+
+interface FilterContainerProps {
+  visible: boolean
+  children: React.ReactNode
+  className?: string
+}
+
+export const FilterContainer = ({
+  visible,
+  children,
+  className,
+}: FilterContainerProps) => {
+  return (
+    <View
+      className={cn('px-5 pb-4', visible ? 'h-auto' : 'h-0 overflow-hidden', className)}
+    >
+      {children}
+    </View>
+  )
+}
+
+interface DateFilterProps {
+  selectedPeriod: string
+  onPeriodChange: (period: string) => void
+}
+
+export const DateFilter = ({ selectedPeriod, onPeriodChange }: DateFilterProps) => {
+  const periods = [
+    { key: 'week', label: 'Semana' },
+    { key: 'month', label: 'Mes' },
+    { key: 'year', label: 'Año' },
+    { key: 'custom', label: 'Personalizado' },
+  ]
+
+  return (
+    <View className="flex-row mb-4">
+      {periods.map(period => (
+        <TouchableOpacity
+          key={period.key}
+          className={cn(
+            'py-2 px-3 rounded-full mr-2',
+            selectedPeriod === period.key ? 'bg-primary/20' : 'bg-transparent',
+          )}
+          onPress={() => onPeriodChange(period.key)}
+        >
+          <Text
+            className={cn(
+              'text-sm',
+              selectedPeriod === period.key
+                ? 'text-primary font-semibold'
+                : 'text-gray-600',
+            )}
+          >
+            {period.label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  )
+}
+
+interface CategoryFilterProps {
+  categories: Array<{ id: string; name: string; icon?: string }>
+  selectedCategory: string
+  onCategoryChange: (categoryId: string) => void
+}
+
+export const CategoryFilter = ({
+  categories,
+  selectedCategory,
+  onCategoryChange,
+}: CategoryFilterProps) => {
+  return (
+    <View>
+      <Text className="text-sm text-gray-600 mb-2">Filtrar por categoría</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
+        {categories.map(category => (
+          <FilterChip
+            key={category.id}
+            selected={selectedCategory === category.id}
+            icon={category.icon as any}
+            onPress={() => onCategoryChange(category.id)}
+          >
+            {category.name}
+          </FilterChip>
+        ))}
+      </ScrollView>
+    </View>
+  )
+}

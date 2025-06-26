@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Category } from '../interfaces/category.interfaces'
+import { Category } from '@/features/setting/interfaces/category.interface'
 
 interface Props {
   category: Category
   isSelected: boolean
-  onSelect: (category: Category) => void
+  onSelect: () => void
 }
 
 export const CategoryItem = ({ category, isSelected, onSelect }: Props) => (
@@ -17,7 +17,7 @@ export const CategoryItem = ({ category, isSelected, onSelect }: Props) => (
         borderColor: category.color,
       },
     ]}
-    onPress={() => onSelect(category)}
+    onPress={() => onSelect()}
   >
     <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
       <Ionicons name={category.icon} size={24} color="#ffffff" />

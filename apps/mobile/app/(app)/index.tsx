@@ -13,65 +13,8 @@ import { Ionicons } from '@expo/vector-icons'
 import { Transaction } from '@/features/transactions/interfaces/transaction.interface'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 import { TransactionCard } from '@/features/transactions/components/transaction-card'
-
-const expenseCategories = [
-  {
-    id: '1',
-    category: 'Alimentación',
-    amount: 580,
-    color: '#6366f1',
-    icon: 'fast-food-outline',
-  },
-  { id: '2', category: 'Transporte', amount: 320, color: '#ec4899', icon: 'car-outline' },
-  {
-    id: '3',
-    category: 'Ocio',
-    amount: 250,
-    color: '#14b8a6',
-    icon: 'game-controller-outline',
-  },
-  { id: '4', category: 'Casa', amount: 850, color: '#f59e0b', icon: 'home-outline' },
-  { id: '5', category: 'Salud', amount: 150, color: '#84cc16', icon: 'fitness-outline' },
-]
-
-const recentTransactions: Transaction[] = [
-  {
-    id: '1',
-    category: 'Alimentación',
-    description: 'Supermercado',
-    amount: -125.5,
-    date: '15 Jun',
-    icon: 'fast-food-outline',
-    color: '#6366f1',
-  },
-  {
-    id: '2',
-    category: 'Salario',
-    description: 'Depósito mensual',
-    amount: 2800,
-    date: '10 Jun',
-    icon: 'cash-outline',
-    color: '#84cc16',
-  },
-  {
-    id: '3',
-    category: 'Transporte',
-    description: 'Gasolina',
-    amount: -45,
-    date: '8 Jun',
-    icon: 'car-outline',
-    color: '#ec4899',
-  },
-  {
-    id: '4',
-    category: 'Ocio',
-    description: 'Cine',
-    amount: -32,
-    date: '5 Jun',
-    icon: 'game-controller-outline',
-    color: '#14b8a6',
-  },
-]
+import { useTransactions } from '@/features/transactions/hooks/use-transactions'
+import { formatNumber } from '@/lib/format-number'
 
 const date = new Date().toLocaleDateString('es-ES', {
   day: 'numeric',
@@ -81,15 +24,24 @@ const date = new Date().toLocaleDateString('es-ES', {
 
 export default function DashboardScreen() {
   const { user } = useAuth()
-
-  const totalExpenses = expenseCategories.reduce(
-    (sum, category) => sum + category.amount,
-    0,
+  const { transactionsQuery } = useTransactions()
+  const transactionsAmounts = transactionsQuery.data?.reduce<{
+    expenses: number
+    incomes: number
+  }>(
+    (sum: { expenses: number; incomes: number }, transaction: Transaction) => {
+      if (transaction.type === 'expense') {
+        sum.expenses += transaction.amount
+      } else {
+        sum.incomes += transaction.amount
+      }
+      return sum
+    },
+    {
+      expenses: 0,
+      incomes: 0,
+    },
   )
-
-  const handleAddTransaction = () => {
-    router.push('/transactions/new')
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,13 +63,17 @@ export default function DashboardScreen() {
               <Ionicons name="eye-outline" size={24} color="#f8fafc" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.balanceAmount}>5.240,30 €</Text>
+          <Text style={styles.balanceAmount}>
+            {formatNumber(transactionsAmounts?.expenses ?? 0)} ₲
+          </Text>
           <View style={styles.balanceFooter}>
             <View style={styles.balanceItem}>
               <Ionicons name="arrow-up-circle-outline" size={24} color="#84cc16" />
               <View style={styles.balanceItemText}>
                 <Text style={styles.balanceItemLabel}>Ingresos</Text>
-                <Text style={styles.balanceItemAmount}>+3.200 €</Text>
+                <Text style={styles.balanceItemAmount}>
+                  {formatNumber(transactionsAmounts?.incomes ?? 0)} ₲
+                </Text>
               </View>
             </View>
             <View style={styles.separator} />
@@ -125,7 +81,9 @@ export default function DashboardScreen() {
               <Ionicons name="arrow-down-circle-outline" size={24} color="#f43f5e" />
               <View style={styles.balanceItemText}>
                 <Text style={styles.balanceItemLabel}>Gastos</Text>
-                <Text style={styles.balanceItemAmount}>-2.150 €</Text>
+                <Text style={styles.balanceItemAmount}>
+                  {formatNumber(transactionsAmounts?.expenses ?? 0)} ₲
+                </Text>
               </View>
             </View>
           </View>
@@ -141,21 +99,27 @@ export default function DashboardScreen() {
         <View style={styles.expensesContainer}>
           <View style={styles.chartContainer}>
             <View style={styles.centerCircle}>
-              <Text style={styles.totalExpensesAmount}>{totalExpenses}€</Text>
+              <Text style={styles.totalExpensesAmount}>
+                {formatNumber(transactionsAmounts?.expenses ?? 0)} ₲
+              </Text>
               <Text style={styles.totalExpensesLabel}>Total</Text>
             </View>
           </View>
 
           <View style={styles.categoriesContainer}>
             <FlatList
-              data={expenseCategories}
+              data={transactionsQuery.data?.filter(
+                transaction => transaction.type === 'expense',
+              )}
               keyExtractor={item => item.id}
               scrollEnabled={false}
               renderItem={({ item }) => (
                 <View style={styles.categoryItem}>
-                  <View style={[styles.categoryDot, { backgroundColor: item.color }]} />
-                  <Text style={styles.categoryName}>{item.category}</Text>
-                  <Text style={styles.categoryAmount}>{item.amount}€</Text>
+                  <View
+                    style={[styles.categoryDot, { backgroundColor: item.category.color }]}
+                  />
+                  <Text style={styles.categoryName}>{item.category.name}</Text>
+                  <Text style={styles.categoryAmount}>{item.amount}₲</Text>
                 </View>
               )}
             />
@@ -170,7 +134,7 @@ export default function DashboardScreen() {
         </View>
 
         <View style={styles.transactionsContainer}>
-          {recentTransactions.map(transaction => (
+          {transactionsQuery.data?.map(transaction => (
             <TransactionCard key={transaction.id} transaction={transaction} />
           ))}
         </View>
@@ -180,7 +144,7 @@ export default function DashboardScreen() {
 
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={handleAddTransaction}
+        onPress={() => router.push('/(app)/transactions/new')}
         activeOpacity={0.8}
       >
         <Ionicons name="add" size={28} color="#ffffff" />
