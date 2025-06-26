@@ -7,10 +7,19 @@ import { AuthModule } from '@/auth/auth.module'
 import { PrismaModule } from '@/prisma/prisma.module'
 
 import { UserModule } from '@/features/users/user.module'
+import { TransactionsModule } from '@/features/transactions/transactions.module'
 import { CategoriesModule } from '@/features/categories/categories.module'
+import { SeederModule } from '@/seeder/seeder.module'
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, CategoriesModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UserModule,
+    TransactionsModule,
+    CategoriesModule,
+    SeederModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
