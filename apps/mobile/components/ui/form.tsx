@@ -69,21 +69,22 @@ interface FormControlProps extends TextInputProps {
   custom?: boolean
 }
 
-export const FormControl = ({ custom = false, ...props }: FormControlProps) => {
+export const FormControl = ({ custom = false, style, ...props }: FormControlProps) => {
   const { error } = useFormField()
+
+  const baseStyle = {
+    borderWidth: custom ? 0 : 1,
+    borderColor: error ? 'red' : '#e2e8f0',
+    borderRadius: 8,
+    padding: custom ? 0 : 10,
+    backgroundColor: 'white',
+  }
+
   return (
     <TextInput
       className={cn('text-base text-gray-700', props.className)}
       placeholderTextColor={Colors.light.blueGray}
-      style={[
-        {
-          borderWidth: custom ? 0 : 1,
-          borderColor: error ? 'red' : '#ccc',
-          borderRadius: 8,
-          padding: custom ? 0 : 10,
-        },
-        props.style,
-      ]}
+      style={[baseStyle, style]}
       {...props}
     />
   )
