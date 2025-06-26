@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Colors } from '@/constants/Colors'
-import { HeaderScreen } from '@/components/common/header-screen'
+import { ScreenHeader } from '@/components/common/screen-header'
 import { Card } from '@/components/ui/card'
 import { IconCard } from '@/components/common/icon-card'
 import { CategoryForm } from '@/features/setting/components/category/category-form'
@@ -23,10 +23,12 @@ export default function CategoryScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: Colors.light.background }}>
-      <HeaderScreen
+      <ScreenHeader
         title="Categorías"
-        icon="add-circle-outline"
-        onPressIcon={() => handleOpenModal()}
+        rightAction={{
+          icon: 'add-circle-outline',
+          onPress: () => handleOpenModal(),
+        }}
       />
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>

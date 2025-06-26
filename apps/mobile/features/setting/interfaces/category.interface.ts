@@ -5,5 +5,4 @@ export interface Category {
   name: string
   icon: keyof typeof Ionicons.glyphMap
   color: string
-  userId: string
 }

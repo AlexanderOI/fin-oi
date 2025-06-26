@@ -48,23 +48,28 @@ export const categoriesIcons: CategoryIcon[] = [
 ]
 
 export const COLORS = [
-  '#FF0000', // Rojo
-  '#00FF00', // Verde
-  '#0000FF', // Azul
-  '#FFFF00', // Amarillo
-  '#FF00FF', // Fucsia
-  '#00FFFF', // Cian
-  '#FFA500', // Naranja
-  '#800080', // Púrpura
-  '#008000', // Verde oscuro
-  '#000080', // Azul marino
-  '#808000', // Oliva
-  '#FFC0CB', // Rosa
-  '#A52A2A', // Marrón
-  '#808080', // Gris
-  '#000000', // Negro
-  '#ADD8E6', // Celeste
-  '#90EE90', // Verde claro
-  '#D2691E', // Chocolate
-  '#F5DEB3', // Trigo
+  '#6366f1',
+  '#84cc16',
+  '#ec4899',
+  '#f59e0b',
+  '#14b8a6',
+  '#FF0000',
+  '#00FF00',
+  '#0000FF',
+  '#FFFF00',
+  '#FF00FF',
+  '#00FFFF',
+  '#FFA500',
+  '#800080',
+  '#008000',
+  '#000080',
+  '#808000',
+  '#FFC0CB',
+  '#A52A2A',
+  '#808080',
+  '#000000',
+  '#ADD8E6',
+  '#90EE90',
+  '#D2691E',
+  '#F5DEB3',
 ]
