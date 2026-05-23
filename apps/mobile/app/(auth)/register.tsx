@@ -25,19 +25,19 @@ import { InputContainer } from '@/features/auth/components/input-container'
 const registerSchema = z
   .object({
     username: z
-      .string({ required_error: 'El nombre es requerido' })
+      .string().min(1, { message: 'El nombre es requerido' })
       .min(3, { message: 'El nombre debe tener al menos 3 caracteres' })
       .refine(data => !data.includes(' '), {
         message: 'El nombre no debe contener espacios',
       }),
     email: z
-      .string({ required_error: 'El correo electrónico es requerido' })
+      .string().min(1, { message: 'El correo electrónico es requerido' })
       .email({ message: 'El correo electrónico no es válido' }),
     password: z
-      .string({ required_error: 'La contraseña es requerida' })
+      .string().min(1, { message: 'La contraseña es requerida' })
       .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
     confirmPassword: z
-      .string({ required_error: 'La confirmación de contraseña es requerida' })
+      .string().min(1, { message: 'La confirmación de contraseña es requerida' })
       .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
   })
   .refine(data => data.confirmPassword === data.password, {
@@ -103,10 +103,8 @@ export default function RegisterScreen() {
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
-          <SafeAreaView
-            style={{ flex: 1 }}
-            className="items-center justify-between px-6 pt-20 pb-6"
-          >
+          <SafeAreaView style={{ flex: 1 }}>
+            <View className="flex-1 items-center justify-between px-6 pt-20 pb-6 bg-background">
             <Header />
 
             <Form {...form}>
@@ -228,7 +226,7 @@ export default function RegisterScreen() {
                 />
 
                 <TouchableOpacity
-                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-lg"
+                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-md elevation-lg"
                   onPress={onSubmit}
                   activeOpacity={0.8}
                 >
@@ -244,6 +242,7 @@ export default function RegisterScreen() {
                   <Text className="text-primary text-lg font-medium">Iniciar Sesión</Text>
                 </Link>
               </TouchableOpacity>
+            </View>
             </View>
           </SafeAreaView>
         </ScrollView>

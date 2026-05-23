@@ -14,13 +14,9 @@ export const FilterContainer = ({
   children,
   className,
 }: FilterContainerProps) => {
-  return (
-    <View
-      className={cn('px-5 pb-4', visible ? 'h-auto' : 'h-0 overflow-hidden', className)}
-    >
-      {children}
-    </View>
-  )
+  if (!visible) return null
+
+  return <View className={cn('px-5 pb-4', className)}>{children}</View>
 }
 
 interface DateFilterProps {

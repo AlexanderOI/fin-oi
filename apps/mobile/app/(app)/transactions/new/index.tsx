@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native'
 import { router } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -89,9 +89,10 @@ export default function NewTransactionScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1 bg-background"
+      style={{ flex: 1 }}
+      className="bg-background"
     >
-      <SafeAreaView className="flex-1">
+      <AppSafeAreaView>
         <ScrollView className="flex-1 p-5" showsVerticalScrollIndicator={false}>
           <Form {...form}>
             <ToggleContainer>
@@ -213,7 +214,7 @@ export default function NewTransactionScreen() {
             </View>
           </Form>
         </ScrollView>
-      </SafeAreaView>
+      </AppSafeAreaView>
     </KeyboardAvoidingView>
   )
 }

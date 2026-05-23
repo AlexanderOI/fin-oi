@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 import { router } from 'expo-router'
 import { useTransactions } from '@/features/transactions/hooks/use-transactions'
 import { useCategoryQuery } from '@/features/setting/hooks/use-category-query'
@@ -25,7 +25,7 @@ export default function TransactionsScreen() {
   const isLoading = transactionsQuery.isLoading || categoriesQuery.isLoading
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <AppSafeAreaView>
       <ScreenHeader
         title="Transacciones"
         rightAction={{
@@ -50,6 +50,6 @@ export default function TransactionsScreen() {
       )}
 
       <FloatingActionButton onPress={() => router.push('/(app)/transactions/new')} />
-    </SafeAreaView>
+    </AppSafeAreaView>
   )
 }

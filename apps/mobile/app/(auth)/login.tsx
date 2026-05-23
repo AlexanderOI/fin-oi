@@ -60,10 +60,8 @@ export default function LoginScreen() {
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
-          <SafeAreaView
-            style={{ flex: 1 }}
-            className="items-center justify-between px-6 pt-20 pb-6"
-          >
+          <SafeAreaView style={{ flex: 1 }}>
+            <View className="flex-1 items-center justify-between px-6 pt-20 pb-6 bg-background">
             <Header />
 
             <Form {...form}>
@@ -130,7 +128,7 @@ export default function LoginScreen() {
               </TouchableOpacity> */}
 
                 <TouchableOpacity
-                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-lg"
+                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-md elevation-lg"
                   onPress={handleLogin}
                   activeOpacity={0.8}
                 >
@@ -146,6 +144,7 @@ export default function LoginScreen() {
                   <Text className="text-primary text-lg font-medium">Regístrate</Text>
                 </Link>
               </TouchableOpacity>
+            </View>
             </View>
           </SafeAreaView>
         </ScrollView>

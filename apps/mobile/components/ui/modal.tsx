@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import ModalRN from 'react-native-modal'
-import { Colors } from '@/constants/Colors'
 
 interface ModalContextType {
   isVisible: boolean
@@ -78,8 +77,7 @@ export function ModalContent({
       propagateSwipe
     >
       <View
-        className="rounded-t-3xl p-5 min-h-[70%]"
-        style={{ backgroundColor: Colors.light.background }}
+        className="rounded-t-3xl p-5 min-h-[70%] bg-background"
       >
         <View className="w-20 h-1.5 bg-gray-300 rounded-full self-center mb-4" />
 

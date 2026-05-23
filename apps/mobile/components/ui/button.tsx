@@ -20,7 +20,7 @@ export const Button = ({
   const variantClasses = {
     primary: 'bg-primary',
     secondary: 'bg-gray-100',
-    outline: 'bg-transparent border border-gray-300',
+    outline: 'bg-transparent border border-gray-300 border-solid',
   }
 
   const sizeClasses = {

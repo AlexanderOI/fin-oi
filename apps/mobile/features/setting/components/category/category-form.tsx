@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Colors } from '@/constants/Colors'
 import { IconName } from '@/global'
 import {
   Form,
@@ -110,13 +109,13 @@ export const CategoryForm = ({ id, onClose }: Props) => {
                 field: { onChange, value, ...field },
                 fieldState: { error },
               }) => (
-                <FormItem className="flex-1 m-0">
+                <FormItem className="!m-0 flex-1">
                   <FormLabel className="h-5">Nombre de la categoría</FormLabel>
                   <FormControl
                     placeholder="Nombre"
                     onChangeText={onChange}
                     value={value}
-                    className="h-14 m-0"
+                    className="h-14 !m-0"
                     {...field}
                   />
                   <FormMessage />
@@ -191,8 +190,7 @@ export const CategoryForm = ({ id, onClose }: Props) => {
           </View>
 
           <TouchableOpacity
-            className="bg-primary rounded-2xl h-14 items-center justify-center mt-4 mb-6"
-            style={{ backgroundColor: Colors.light.primary }}
+            className="bg-primary rounded-2xl h-14 items-center justify-center mt-4 mb-6 shadow-md elevation-lg"
             onPress={handleSubmit}
           >
             <Text className="text-white font-medium text-base">Guardar</Text>

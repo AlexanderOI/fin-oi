@@ -29,8 +29,7 @@ export const FloatingActionButton = ({
   return (
     <TouchableOpacity
       className={cn(
-        'absolute bottom-6 right-6 rounded-full bg-primary items-center justify-center',
-        'shadow-lg',
+        'absolute bottom-6 right-6 rounded-full bg-primary items-center justify-center shadow-md elevation-lg',
         sizeClasses[size],
         className,
       )}

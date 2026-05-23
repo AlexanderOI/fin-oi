@@ -28,16 +28,16 @@ export const ModalDelete = ({
           </Text>
         </View>
 
-        <View className="flex-row justify-between space-x-3 mt-6">
+        <View className="flex-row gap-3 mt-6">
           <TouchableOpacity
             onPress={onClose}
-            className="px-4 py-2 rounded-lg bg-gray-200"
+            className="flex-1 px-4 py-2 rounded-lg bg-gray-200 items-center"
           >
             <Text className="text-gray-700 font-medium">Cancelar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={onDelete}
-            className="px-4 py-2 rounded-lg bg-red-600"
+            className="flex-1 px-4 py-2 rounded-lg bg-red-600 items-center"
           >
             <Text className="text-white font-medium">Eliminar</Text>
           </TouchableOpacity>

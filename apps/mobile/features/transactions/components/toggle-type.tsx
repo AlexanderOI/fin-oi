@@ -15,7 +15,7 @@ export const ToggleButton = ({ isSelected, label, onPress }: ToggleButtonProps) 
   return (
     <TouchableOpacity
       className={cn(
-        'flex-1 items-center justify-center p-3 rounded-xl shadow-sm elevation-sm',
+        'flex-1 items-center justify-center p-3 rounded-xl shadow-sm elevation-xs',
         isSelected ? 'bg-white' : 'bg-slate-200',
       )}
       onPress={onPress}

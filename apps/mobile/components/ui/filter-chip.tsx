@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, TouchableOpacityProps, Text } from 'react-native'
+import { TouchableOpacity, TouchableOpacityProps, Text, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { cn } from '@/lib/cn'
 
@@ -27,12 +27,13 @@ export const FilterChip = ({
       {...props}
     >
       {icon && (
-        <Ionicons
-          name={icon}
-          size={16}
-          color={selected ? '#ffffff' : '#64748b'}
-          className="mr-1"
-        />
+        <View className="mr-1">
+          <Ionicons
+            name={icon}
+            size={16}
+            color={selected ? '#ffffff' : '#64748b'}
+          />
+        </View>
       )}
       <Text
         className={cn('text-sm', selected ? 'text-white font-semibold' : 'text-gray-600')}
