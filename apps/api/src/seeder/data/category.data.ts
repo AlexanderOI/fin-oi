@@ -1,4 +1,4 @@
-import { Category } from 'generated/prisma/client'
+import { Category } from '@/drizzle/schema'
 
 export const categoryData: Omit<Category, 'userId' | 'isDefault'>[] = [
   {

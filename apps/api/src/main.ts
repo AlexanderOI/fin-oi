@@ -1,3 +1,6 @@
+import { mkdirSync, writeFileSync } from 'fs'
+import { join } from 'path'
+
 import { NestFactory } from '@nestjs/core'
 import { ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
@@ -18,7 +21,7 @@ async function bootstrap() {
   await fastifyInstance.register(multipart as any)
 
   app.enableCors({
-    origin: process.env.APP_URL,
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   })
 
@@ -31,6 +34,13 @@ async function bootstrap() {
     .build()
 
   const document = SwaggerModule.createDocument(app, config)
+
+  if (process.env.ENV === 'development') {
+    const docsDir = join(process.cwd(), 'src/docs')
+    mkdirSync(docsDir, { recursive: true })
+    writeFileSync(join(docsDir, 'swagger.json'), JSON.stringify(document, null, 2))
+  }
+
   SwaggerModule.setup('api', app, document)
 
   app.useGlobalPipes(

@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common'
 import { hash } from 'bcrypt'
 
-import { PrismaService } from '@/prisma/prisma.service'
+import { DrizzleService } from '@/drizzle/drizzle.service'
+import { categories, notifications, transactions, users } from '@/drizzle/schema'
 
 import { userSeeder } from '@/seeder/data/user.data'
 import { categoryData } from '@/seeder/data/category.data'
 
 @Injectable()
 export class SeederService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly drizzle: DrizzleService) {}
 
   async seed() {
     await this.delete()
@@ -17,29 +18,30 @@ export class SeederService {
   }
 
   async createUser() {
-    const user = await this.prisma.user.create({
-      data: {
+    const [user] = await this.drizzle.db
+      .insert(users)
+      .values({
         ...userSeeder,
         password: await hash(userSeeder.password, 10),
-      },
-    })
+      })
+      .returning()
 
     return user
   }
 
   async createCategories(userId: string) {
-    const categories = await this.prisma.category.createMany({
-      data: categoryData.map(category => ({
+    await this.drizzle.db.insert(categories).values(
+      categoryData.map(category => ({
         ...category,
         userId,
       })),
-    })
+    )
   }
 
   async delete() {
-    const notifications = await this.prisma.notification.deleteMany()
-    const categories = await this.prisma.category.deleteMany()
-    const transactions = await this.prisma.transaction.deleteMany()
-    const users = await this.prisma.user.deleteMany()
+    await this.drizzle.db.delete(notifications)
+    await this.drizzle.db.delete(transactions)
+    await this.drizzle.db.delete(categories)
+    await this.drizzle.db.delete(users)
   }
 }

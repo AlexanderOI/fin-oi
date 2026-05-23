@@ -6,9 +6,11 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { hash, compare } from 'bcrypt'
+import { eq } from 'drizzle-orm'
 
 import { UserAuth } from '@/types'
-import { PrismaService } from '@/prisma/prisma.service'
+import { DrizzleService } from '@/drizzle/drizzle.service'
+import { users } from '@/drizzle/schema'
 import { UserPayload } from '@/auth/interfaces/user-payload.interface'
 
 import { RegisterAuthDto } from '@/auth/dto/register.dto'
@@ -18,7 +20,7 @@ import { LoginAuthDto } from '@/auth/dto/login.dto'
 export class AuthService {
   constructor(
     private jwtAuthService: JwtService,
-    private readonly prismaService: PrismaService,
+    private readonly drizzle: DrizzleService,
   ) {}
 
   async register(userRegister: RegisterAuthDto) {
@@ -26,9 +28,11 @@ export class AuthService {
     const passwordHash = await hash(password, 10)
     const userToCreate = { ...userRegister, password: passwordHash }
 
-    const existingUserByEmail = await this.prismaService.user.findUnique({
-      where: { email },
-    })
+    const [existingUserByEmail] = await this.drizzle.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1)
 
     if (existingUserByEmail) {
       throw new ConflictException({
@@ -36,9 +40,11 @@ export class AuthService {
       })
     }
 
-    const existsUserByName = await this.prismaService.user.findUnique({
-      where: { username },
-    })
+    const [existsUserByName] = await this.drizzle.db
+      .select()
+      .from(users)
+      .where(eq(users.username, username))
+      .limit(1)
 
     if (existsUserByName) {
       throw new ConflictException({
@@ -46,9 +52,7 @@ export class AuthService {
       })
     }
 
-    await this.prismaService.user.create({
-      data: userToCreate,
-    })
+    await this.drizzle.db.insert(users).values(userToCreate)
 
     return { message: 'User registered successfully' }
   }
@@ -56,7 +60,11 @@ export class AuthService {
   async login(userLogin: LoginAuthDto) {
     const { username, password } = userLogin
 
-    const user = await this.prismaService.user.findUnique({ where: { username } })
+    const [user] = await this.drizzle.db
+      .select()
+      .from(users)
+      .where(eq(users.username, username))
+      .limit(1)
 
     if (!user) throw new NotFoundException('User does not exist')
 
@@ -99,12 +107,22 @@ export class AuthService {
 
   async checkUserData(username?: string, email?: string) {
     if (username) {
-      const user = await this.prismaService.user.findUnique({ where: { username } })
+      const [user] = await this.drizzle.db
+        .select()
+        .from(users)
+        .where(eq(users.username, username))
+        .limit(1)
+
       if (user) throw new ConflictException({ username: 'User already exists' })
     }
 
     if (email) {
-      const userByEmail = await this.prismaService.user.findUnique({ where: { email } })
+      const [userByEmail] = await this.drizzle.db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1)
+
       if (userByEmail) throw new ConflictException({ email: 'Email already exists' })
     }
 
@@ -112,7 +130,11 @@ export class AuthService {
   }
 
   async createUserPayload(userId: string): Promise<UserPayload> {
-    const user = await this.prismaService.user.findUnique({ where: { id: userId } })
+    const [user] = await this.drizzle.db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1)
 
     if (!user) throw new NotFoundException('User does not exist')
 
