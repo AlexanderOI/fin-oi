@@ -1,8 +1,19 @@
 packages:
   - apps/*
   - packages/*
+allowBuilds:
+  "@nestjs/core": true
+  "@scarf/scarf": true
+  "@swc/core": true
+  bcrypt: true
+  esbuild: true
+  msgpackr-extract: true
+  sharp: true
+  unrs-resolver: true
 onlyBuiltDependencies:
-  - '@nestjs/core'
-  - '@swc/core'
+  - "@nestjs/core"
+  - "@swc/core"
   - sharp
   - unrs-resolver
+overrides:
+  lightningcss: 1.30.1

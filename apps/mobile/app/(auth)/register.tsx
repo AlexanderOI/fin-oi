@@ -25,19 +25,23 @@ import { InputContainer } from '@/features/auth/components/input-container'
 const registerSchema = z
   .object({
     username: z
-      .string().min(1, { message: 'El nombre es requerido' })
+      .string()
+      .min(1, { message: 'El nombre es requerido' })
       .min(3, { message: 'El nombre debe tener al menos 3 caracteres' })
       .refine(data => !data.includes(' '), {
         message: 'El nombre no debe contener espacios',
       }),
     email: z
-      .string().min(1, { message: 'El correo electrónico es requerido' })
+      .string()
+      .min(1, { message: 'El correo electrónico es requerido' })
       .email({ message: 'El correo electrónico no es válido' }),
     password: z
-      .string().min(1, { message: 'La contraseña es requerida' })
+      .string()
+      .min(1, { message: 'La contraseña es requerida' })
       .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
     confirmPassword: z
-      .string().min(1, { message: 'La confirmación de contraseña es requerida' })
+      .string()
+      .min(1, { message: 'La confirmación de contraseña es requerida' })
       .min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
   })
   .refine(data => data.confirmPassword === data.password, {
@@ -104,145 +108,149 @@ export default function RegisterScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <SafeAreaView style={{ flex: 1 }}>
-            <View className="flex-1 items-center justify-between px-6 pt-20 pb-6 bg-background">
-            <Header />
+            <View className="flex-1 items-center justify-between px-6 pb-6 bg-background">
+              <Header />
 
-            <Form {...form}>
-              <View className="w-full">
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({
-                    field: { onChange, value, ...field },
-                    fieldState: { error },
-                  }) => (
-                    <FormItem>
-                      <InputContainer error={error?.message}>
-                        <AuthIcon name="person-outline" />
-                        <FormControl
-                          placeholder="Nombre"
-                          custom
-                          className="flex-1"
-                          onChangeText={onChange}
-                          value={value}
-                          {...field}
-                        />
-                      </InputContainer>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({
-                    field: { onChange, value, ...field },
-                    fieldState: { error },
-                  }) => (
-                    <FormItem>
-                      <InputContainer error={error?.message}>
-                        <AuthIcon name="mail-outline" />
-                        <FormControl
-                          placeholder="Correo electrónico"
-                          keyboardType="email-address"
-                          autoCapitalize="none"
-                          custom
-                          className="flex-1"
-                          onChangeText={onChange}
-                          value={value}
-                          {...field}
-                        />
-                      </InputContainer>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({
-                    field: { onChange, value, ...field },
-                    fieldState: { error },
-                  }) => (
-                    <FormItem>
-                      <InputContainer error={error?.message}>
-                        <AuthIcon name="lock-closed-outline" />
-                        <FormControl
-                          placeholder="Contraseña"
-                          custom
-                          className="flex-1"
-                          onChangeText={onChange}
-                          value={value}
-                          secureTextEntry={!showPassword}
-                          {...field}
-                        />
-                        <TouchableOpacity
-                          className="p-2"
-                          onPress={() => setShowPassword(!showPassword)}
-                        >
-                          <AuthIcon
-                            name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+              <Form {...form}>
+                <View className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({
+                      field: { onChange, value, ...field },
+                      fieldState: { error },
+                    }) => (
+                      <FormItem>
+                        <InputContainer error={error?.message}>
+                          <AuthIcon name="person-outline" />
+                          <FormControl
+                            placeholder="Nombre"
+                            custom
+                            className="flex-1"
+                            onChangeText={onChange}
+                            value={value}
+                            {...field}
                           />
-                        </TouchableOpacity>
-                      </InputContainer>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </InputContainer>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({
-                    field: { onChange, value, ...field },
-                    fieldState: { error },
-                  }) => (
-                    <FormItem>
-                      <InputContainer error={error?.message}>
-                        <AuthIcon name="lock-closed-outline" />
-                        <FormControl
-                          placeholder="Confirmar contraseña"
-                          custom
-                          className="flex-1"
-                          onChangeText={onChange}
-                          value={value}
-                          secureTextEntry={!showConfirmPassword}
-                          {...field}
-                        />
-                        <TouchableOpacity
-                          className="p-2"
-                          onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                          <AuthIcon
-                            name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({
+                      field: { onChange, value, ...field },
+                      fieldState: { error },
+                    }) => (
+                      <FormItem>
+                        <InputContainer error={error?.message}>
+                          <AuthIcon name="mail-outline" />
+                          <FormControl
+                            placeholder="Correo electrónico"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            custom
+                            className="flex-1"
+                            onChangeText={onChange}
+                            value={value}
+                            {...field}
                           />
-                        </TouchableOpacity>
-                      </InputContainer>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </InputContainer>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <TouchableOpacity
-                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-md elevation-lg"
-                  onPress={onSubmit}
-                  activeOpacity={0.8}
-                >
-                  <Text className="text-white text-lg font-bold">Registrarse</Text>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({
+                      field: { onChange, value, ...field },
+                      fieldState: { error },
+                    }) => (
+                      <FormItem>
+                        <InputContainer error={error?.message}>
+                          <AuthIcon name="lock-closed-outline" />
+                          <FormControl
+                            placeholder="Contraseña"
+                            custom
+                            className="flex-1"
+                            onChangeText={onChange}
+                            value={value}
+                            secureTextEntry={!showPassword}
+                            {...field}
+                          />
+                          <TouchableOpacity
+                            className="p-2"
+                            onPress={() => setShowPassword(!showPassword)}
+                          >
+                            <AuthIcon
+                              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                            />
+                          </TouchableOpacity>
+                        </InputContainer>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({
+                      field: { onChange, value, ...field },
+                      fieldState: { error },
+                    }) => (
+                      <FormItem>
+                        <InputContainer error={error?.message}>
+                          <AuthIcon name="lock-closed-outline" />
+                          <FormControl
+                            placeholder="Confirmar contraseña"
+                            custom
+                            className="flex-1"
+                            onChangeText={onChange}
+                            value={value}
+                            secureTextEntry={!showConfirmPassword}
+                            {...field}
+                          />
+                          <TouchableOpacity
+                            className="p-2"
+                            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                          >
+                            <AuthIcon
+                              name={
+                                showConfirmPassword ? 'eye-off-outline' : 'eye-outline'
+                              }
+                            />
+                          </TouchableOpacity>
+                        </InputContainer>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <TouchableOpacity
+                    className="bg-primary rounded-2xl h-14 items-center justify-center"
+                    onPress={onSubmit}
+                    activeOpacity={0.8}
+                  >
+                    <Text className="text-white text-lg font-bold">Registrarse</Text>
+                  </TouchableOpacity>
+                </View>
+              </Form>
+
+              <View className="flex-row mt-6">
+                <Text className="text-gray-500 text-lg">¿Ya tienes una cuenta? </Text>
+                <TouchableOpacity onPress={() => {}}>
+                  <Link href="/(auth)/login" asChild>
+                    <Text className="text-primary text-lg font-medium">
+                      Iniciar Sesión
+                    </Text>
+                  </Link>
                 </TouchableOpacity>
               </View>
-            </Form>
-
-            <View className="flex-row mt-6">
-              <Text className="text-gray-500 text-lg">¿Ya tienes una cuenta? </Text>
-              <TouchableOpacity onPress={() => {}}>
-                <Link href="/(auth)/login" asChild>
-                  <Text className="text-primary text-lg font-medium">Iniciar Sesión</Text>
-                </Link>
-              </TouchableOpacity>
-            </View>
             </View>
           </SafeAreaView>
         </ScrollView>

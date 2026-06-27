@@ -61,90 +61,90 @@ export default function LoginScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <SafeAreaView style={{ flex: 1 }}>
-            <View className="flex-1 items-center justify-between px-6 pt-20 pb-6 bg-background">
-            <Header />
+            <View className="flex-1 items-center justify-between px-6 pb-6 bg-background">
+              <Header />
 
-            <Form {...form}>
-              <View className="w-full">
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({
-                    field: { onChange, value, ...field },
-                    fieldState: { error },
-                  }) => (
-                    <FormItem>
-                      <InputContainer error={error?.message}>
-                        <AuthIcon name="person-outline" />
-                        <FormControl
-                          custom
-                          className="flex-1"
-                          placeholder="Nombre"
-                          onChangeText={onChange}
-                          value={value}
-                          {...field}
-                        />
-                      </InputContainer>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({
-                    field: { onChange, value, ...field },
-                    fieldState: { error },
-                  }) => (
-                    <FormItem>
-                      <InputContainer error={error?.message}>
-                        <AuthIcon name="lock-closed-outline" />
-                        <FormControl
-                          custom
-                          className="flex-1"
-                          placeholder="Contraseña"
-                          onChangeText={onChange}
-                          value={value}
-                          secureTextEntry={!showPassword}
-                          {...field}
-                        />
-                        <TouchableOpacity
-                          className="p-2"
-                          onPress={() => setShowPassword(!showPassword)}
-                        >
-                          <AuthIcon
-                            name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+              <Form {...form}>
+                <View className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({
+                      field: { onChange, value, ...field },
+                      fieldState: { error },
+                    }) => (
+                      <FormItem>
+                        <InputContainer error={error?.message}>
+                          <AuthIcon name="person-outline" />
+                          <FormControl
+                            custom
+                            className="flex-1"
+                            placeholder="Nombre"
+                            onChangeText={onChange}
+                            value={value}
+                            {...field}
                           />
-                        </TouchableOpacity>
-                      </InputContainer>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </InputContainer>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                {/* <TouchableOpacity style={styles.forgotPassword} onPress={() => {}}>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({
+                      field: { onChange, value, ...field },
+                      fieldState: { error },
+                    }) => (
+                      <FormItem>
+                        <InputContainer error={error?.message}>
+                          <AuthIcon name="lock-closed-outline" />
+                          <FormControl
+                            custom
+                            className="flex-1"
+                            placeholder="Contraseña"
+                            onChangeText={onChange}
+                            value={value}
+                            secureTextEntry={!showPassword}
+                            {...field}
+                          />
+                          <TouchableOpacity
+                            className="p-2"
+                            onPress={() => setShowPassword(!showPassword)}
+                          >
+                            <AuthIcon
+                              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                            />
+                          </TouchableOpacity>
+                        </InputContainer>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* <TouchableOpacity style={styles.forgotPassword} onPress={() => {}}>
                 <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
               </TouchableOpacity> */}
 
-                <TouchableOpacity
-                  className="bg-primary rounded-2xl h-14 items-center justify-center shadow-md elevation-lg"
-                  onPress={handleLogin}
-                  activeOpacity={0.8}
-                >
-                  <Text className="text-white text-lg font-bold">Iniciar Sesión</Text>
+                  <TouchableOpacity
+                    className="bg-primary rounded-2xl h-14 items-center justify-center"
+                    onPress={handleLogin}
+                    activeOpacity={0.8}
+                  >
+                    <Text className="text-white text-lg font-bold">Iniciar Sesión</Text>
+                  </TouchableOpacity>
+                </View>
+              </Form>
+
+              <View className="flex-row mt-6">
+                <Text className="text-gray-500 text-lg">¿No tienes una cuenta? </Text>
+                <TouchableOpacity onPress={() => {}}>
+                  <Link href="/(auth)/register" asChild>
+                    <Text className="text-primary text-lg font-medium">Regístrate</Text>
+                  </Link>
                 </TouchableOpacity>
               </View>
-            </Form>
-
-            <View className="flex-row mt-6">
-              <Text className="text-gray-500 text-lg">¿No tienes una cuenta? </Text>
-              <TouchableOpacity onPress={() => {}}>
-                <Link href="/(auth)/register" asChild>
-                  <Text className="text-primary text-lg font-medium">Regístrate</Text>
-                </Link>
-              </TouchableOpacity>
-            </View>
             </View>
           </SafeAreaView>
         </ScrollView>

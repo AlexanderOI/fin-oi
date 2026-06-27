@@ -11,7 +11,7 @@ export function InputContainer({ children, error }: Props) {
   return (
     <View
       className={cn(
-        'flex-row items-center bg-white rounded-2xl px-4 h-14 shadow-md elevation-md',
+        'flex-row items-center bg-white rounded-2xl px-4 h-14 border border-gray-200',
         error && 'border border-red-500',
       )}
     >
