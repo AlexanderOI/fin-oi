@@ -76,9 +76,9 @@ export const CategoryForm = ({ id, onClose }: Props) => {
       }
 
       if (id) {
-        handleUpdateCategory(id, newData)
+        await handleUpdateCategory(id, newData)
       } else {
-        handleCreateCategory(newData)
+        await handleCreateCategory(newData)
       }
       form.reset()
       onClose()
@@ -89,8 +89,8 @@ export const CategoryForm = ({ id, onClose }: Props) => {
     }
   })
 
-  const handleDelete = () => {
-    handleDeleteCategory(id ?? '')
+  const handleDelete = async () => {
+    await handleDeleteCategory(id ?? '')
     setIsModalDeleteVisible(false)
     onClose()
   }
@@ -190,7 +190,7 @@ export const CategoryForm = ({ id, onClose }: Props) => {
           </View>
 
           <TouchableOpacity
-            className="bg-primary rounded-2xl h-14 items-center justify-center mt-4 mb-6 shadow-md elevation-lg"
+            className="bg-primary rounded-2xl h-14 items-center justify-center mt-4 mb-6"
             onPress={handleSubmit}
           >
             <Text className="text-white font-medium text-base">Guardar</Text>

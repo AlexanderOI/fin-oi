@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
   View,
   Text,
@@ -41,7 +41,7 @@ export default function LoginScreen() {
   })
 
   const handleLogin = form.handleSubmit(async data => {
-    const response = await login(data.username, data.password)
+    const response = await login(data.username.trim(), data.password.trim())
     if (!response) {
       form.setError('username', { message: 'Credenciales incorrectas' })
       return

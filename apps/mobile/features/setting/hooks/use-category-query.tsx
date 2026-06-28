@@ -20,6 +20,7 @@ export const useCategoryQuery = (id?: string) => {
   const categoryQuery = useQuery({
     queryKey: ['category', id],
     queryFn: () => getCategoryById(id),
+    enabled: !!id,
   })
 
   const handlePrefetchCategory = (id: string) => {
@@ -29,36 +30,43 @@ export const useCategoryQuery = (id?: string) => {
     })
   }
 
-  const invalidateCategoriesQuery = () => {
-    queryClient.invalidateQueries({ queryKey: ['categories'] })
+  const invalidateCategoriesQuery = async (categoryId?: string) => {
+    await queryClient.invalidateQueries({ queryKey: ['categories'] })
+    const detailId = categoryId ?? id
+    if (detailId) {
+      await queryClient.invalidateQueries({ queryKey: ['category', detailId] })
+    }
   }
 
   const createCategoryMutation = useMutation({
     mutationFn: (category: CreateCategoryDto) => createCategory(category),
-    onSuccess: invalidateCategoriesQuery,
   })
 
   const updateCategoryMutation = useMutation({
     mutationFn: ({ category, id }: { category: UpdateCategoryDto; id: string }) =>
       updateCategory(category, id),
-    onSuccess: invalidateCategoriesQuery,
   })
 
   const deleteCategoryMutation = useMutation({
     mutationFn: (id: string) => deleteCategory(id),
-    onSuccess: invalidateCategoriesQuery,
   })
 
-  const handleCreateCategory = (category: CreateCategoryDto) => {
-    createCategoryMutation.mutate(category)
+  const handleCreateCategory = async (category: CreateCategoryDto) => {
+    const result = await createCategoryMutation.mutateAsync(category)
+    await invalidateCategoriesQuery()
+    return result
   }
 
-  const handleUpdateCategory = (id: string, category: UpdateCategoryDto) => {
-    updateCategoryMutation.mutate({ category, id })
+  const handleUpdateCategory = async (id: string, category: UpdateCategoryDto) => {
+    const result = await updateCategoryMutation.mutateAsync({ category, id })
+    await invalidateCategoriesQuery(id)
+    return result
   }
 
-  const handleDeleteCategory = (id: string) => {
-    deleteCategoryMutation.mutate(id)
+  const handleDeleteCategory = async (id: string) => {
+    const result = await deleteCategoryMutation.mutateAsync(id)
+    await invalidateCategoriesQuery(id)
+    return result
   }
 
   return {

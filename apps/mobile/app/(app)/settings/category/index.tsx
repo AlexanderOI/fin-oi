@@ -1,14 +1,16 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useState } from 'react'
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 import { ScreenHeader } from '@/components/common/screen-header'
+
 import { Card } from '@/components/ui/card'
+import { Modal, ModalContent } from '@/components/ui/modal'
 import { IconCard } from '@/components/common/icon-card'
-import { CategoryForm } from '@/features/setting/components/category/category-form'
+
 import { useCategoryQuery } from '@/features/setting/hooks/use-category-query'
 import { Category } from '@/features/setting/interfaces/category.interface'
-import { Modal, ModalContent } from '@/components/ui/modal'
 import { CategoryFormSkeleton } from '@/features/setting/components/category/category-form-skeleton'
+import { CategoryForm } from '@/features/setting/components/category/category-form'
 
 export default function CategoryScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false)

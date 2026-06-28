@@ -1,11 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  TouchableOpacityProps,
-} from 'react-native'
+import { View, TouchableOpacity, Text, TouchableOpacityProps } from 'react-native'
 
 interface Props extends TouchableOpacityProps {
   icon: keyof typeof Ionicons.glyphMap
@@ -23,53 +17,24 @@ export const SettingItem = ({
   rightElement,
   ...props
 }: Props) => (
-  <TouchableOpacity style={styles.settingItem} {...props}>
-    <View style={[styles.settingIcon, { backgroundColor: `${iconColor}15` }]}>
+  <TouchableOpacity
+    className="flex-row items-center py-4 px-4 border-b border-slate-100"
+    {...props}
+  >
+    <View
+      className="w-10 h-10 rounded-xl items-center justify-center mr-4"
+      style={{ backgroundColor: `${iconColor}15` }}
+    >
       <Ionicons name={icon} size={20} color={iconColor} />
     </View>
 
-    <View style={styles.settingInfo}>
-      <Text style={styles.settingTitle}>{title}</Text>
-      {description && <Text style={styles.settingDescription}>{description}</Text>}
+    <View className="flex-1">
+      <Text className="text-base font-medium text-slate-800 mb-0.5">{title}</Text>
+      {description && <Text className="text-sm text-slate-500">{description}</Text>}
     </View>
 
-    <View style={styles.settingAction}>
+    <View className="ml-3">
       {rightElement || <Ionicons name="chevron-forward" size={20} color="#94a3b8" />}
     </View>
   </TouchableOpacity>
 )
-
-const styles = StyleSheet.create({
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
-  },
-  settingIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
-  settingInfo: {
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#1e293b',
-    marginBottom: 2,
-  },
-  settingDescription: {
-    fontSize: 14,
-    color: '#64748b',
-  },
-  settingAction: {
-    marginLeft: 12,
-  },
-})

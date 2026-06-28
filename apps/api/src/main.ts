@@ -52,6 +52,6 @@ async function bootstrap() {
   )
 
   await app.listen(process.env.PORT || 8000)
-  console.log(`🚀 App started in ${Date.now() - start}ms`)
+  console.log(`App started in ${Date.now() - start}ms`)
 }
 bootstrap()
