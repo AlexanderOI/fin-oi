@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import { cn } from '@/lib/cn'
 import { FilterChip } from '../../../components/ui/filter-chip'
+import { TransactionPeriod } from '@/features/transactions/actions/transaction.action'
 
 interface FilterContainerProps {
   visible: boolean
@@ -20,12 +21,12 @@ export const FilterContainer = ({
 }
 
 interface DateFilterProps {
-  selectedPeriod: string
-  onPeriodChange: (period: string) => void
+  selectedPeriod: TransactionPeriod
+  onPeriodChange: (period: TransactionPeriod) => void
 }
 
 export const DateFilter = ({ selectedPeriod, onPeriodChange }: DateFilterProps) => {
-  const periods = [
+  const periods: { key: TransactionPeriod; label: string }[] = [
     { key: 'week', label: 'Semana' },
     { key: 'month', label: 'Mes' },
     { key: 'year', label: 'Año' },
@@ -74,6 +75,12 @@ export const CategoryFilter = ({
     <View>
       <Text className="text-sm text-gray-600 mb-2">Filtrar por categoría</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
+        <FilterChip
+          selected={selectedCategory === 'all'}
+          onPress={() => onCategoryChange('all')}
+        >
+          Todas
+        </FilterChip>
         {categories.map(category => (
           <FilterChip
             key={category.id}

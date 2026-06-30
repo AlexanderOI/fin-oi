@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import {
   View,
   Text,
@@ -31,7 +31,7 @@ import {
 } from '@/features/transactions/components/toggle-type'
 import { CategoryItem } from '@/features/transactions/components/category-item'
 import { useCategoryQuery } from '@/features/setting/hooks/use-category-query'
-import { useTransactions } from '@/features/transactions/hooks/use-transactions'
+import { useTransaction } from '@/features/transactions/hooks/use-transaction'
 
 const formSchema = z.object({
   amount: z
@@ -61,7 +61,7 @@ const initialData: FormValues = {
 }
 
 export default function NewTransactionScreen() {
-  const { handleCreateTransaction, mutateError } = useTransactions()
+  const { handleCreateTransaction, mutateError } = useTransaction()
   const { categoriesQuery } = useCategoryQuery()
 
   const form = useForm<FormValues>({

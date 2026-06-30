@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common'
 import { TransactionsService } from './transactions.service'
 import { CreateTransactionDto } from './dto/create-transaction.dto'
 import { UpdateTransactionDto } from './dto/update-transaction.dto'
+import { FindTransactionsQueryDto } from './dto/find-transactions-query.dto'
 import { User } from '@/auth/decorators/user.decorator'
 import { UserAuth } from '@/types'
 import { Auth } from '@/auth/decorators/auth.decorator'
@@ -26,8 +28,8 @@ export class TransactionsController {
   }
 
   @Get()
-  findAll(@User() user: UserAuth) {
-    return this.transactionsService.findAll(user.id)
+  findAll(@User() user: UserAuth, @Query() query: FindTransactionsQueryDto) {
+    return this.transactionsService.findAll(user.id, query)
   }
 
   @Get(':id')

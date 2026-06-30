@@ -1,20 +1,13 @@
-import React from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import { router } from 'expo-router'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
-import { Transaction } from '@/features/transactions/interfaces/transaction.interface'
+
+import { formatNumber } from '@/lib/format-number'
 import { useAuth } from '@/features/auth/hooks/useAuth'
+import { Transaction } from '@/features/transactions/interfaces/transaction.interface'
 import { TransactionCard } from '@/features/transactions/components/transaction-card'
 import { useTransactions } from '@/features/transactions/hooks/use-transactions'
-import { formatNumber } from '@/lib/format-number'
+import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 
 const date = new Date().toLocaleDateString('es-ES', {
   day: 'numeric',
@@ -25,11 +18,12 @@ const date = new Date().toLocaleDateString('es-ES', {
 export default function DashboardScreen() {
   const { user } = useAuth()
   const { transactionsQuery } = useTransactions()
+
   const transactionsAmounts = transactionsQuery.data?.reduce<{
     expenses: number
     incomes: number
   }>(
-    (sum: { expenses: number; incomes: number }, transaction: Transaction) => {
+    (sum, transaction: Transaction) => {
       if (transaction.type === 'expense') {
         sum.expenses += transaction.amount
       } else {
@@ -37,51 +31,54 @@ export default function DashboardScreen() {
       }
       return sum
     },
-    {
-      expenses: 0,
-      incomes: 0,
-    },
+    { expenses: 0, incomes: 0 },
   )
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
+    <AppSafeAreaView>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <View className="flex-row justify-between items-center px-5 pt-4 pb-2">
           <View>
-            <Text style={styles.greeting}>Hola, {user?.username}</Text>
-            <Text style={styles.date}>{date}</Text>
+            <Text className="text-[22px] font-bold text-slate-800">
+              Hola, {user?.username}
+            </Text>
+            <Text className="text-sm text-slate-500">{date}</Text>
           </View>
-          <TouchableOpacity style={styles.profileButton}>
+          <TouchableOpacity className="w-11 h-11 rounded-full items-center justify-center">
             <Ionicons name="person-circle-outline" size={40} color="#6366f1" />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.balanceCard}>
-          <View style={styles.balanceHeader}>
-            <Text style={styles.balanceTitle}>Balance Total</Text>
+        {/* Balance Card */}
+        <View className="bg-indigo-500 rounded-[20px] mx-5 mt-4 mb-6 p-5">
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-base text-slate-100 opacity-90">Balance Total</Text>
             <TouchableOpacity>
               <Ionicons name="eye-outline" size={24} color="#f8fafc" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.balanceAmount}>
+          <Text className="text-[32px] font-bold text-white mb-6">
             {formatNumber(transactionsAmounts?.expenses ?? 0)} ₲
           </Text>
-          <View style={styles.balanceFooter}>
-            <View style={styles.balanceItem}>
+          <View className="flex-row justify-between items-center">
+            {/* Ingresos */}
+            <View className="flex-row items-center flex-1">
               <Ionicons name="arrow-up-circle-outline" size={24} color="#84cc16" />
-              <View style={styles.balanceItemText}>
-                <Text style={styles.balanceItemLabel}>Ingresos</Text>
-                <Text style={styles.balanceItemAmount}>
+              <View className="ml-3">
+                <Text className="text-sm text-slate-100 opacity-90">Ingresos</Text>
+                <Text className="text-base font-semibold text-white">
                   {formatNumber(transactionsAmounts?.incomes ?? 0)} ₲
                 </Text>
               </View>
             </View>
-            <View style={styles.separator} />
-            <View style={styles.balanceItem}>
+
+            <View className="w-px h-10 bg-slate-100 opacity-20 mx-5" />
+
+            <View className="flex-row items-center flex-1">
               <Ionicons name="arrow-down-circle-outline" size={24} color="#f43f5e" />
-              <View style={styles.balanceItemText}>
-                <Text style={styles.balanceItemLabel}>Gastos</Text>
-                <Text style={styles.balanceItemAmount}>
+              <View className="ml-3">
+                <Text className="text-sm text-slate-100 opacity-90">Gastos</Text>
+                <Text className="text-base font-semibold text-white">
                   {formatNumber(transactionsAmounts?.expenses ?? 0)} ₲
                 </Text>
               </View>
@@ -89,265 +86,73 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Gastos por Categoría</Text>
+        <View className="flex-row justify-between items-center px-5 mb-4">
+          <Text className="text-lg font-semibold text-slate-800">
+            Gastos por Categoría
+          </Text>
           <TouchableOpacity>
-            <Text style={styles.seeAllText}>Ver todo</Text>
+            <Text className="text-sm text-indigo-500">Ver todo</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.expensesContainer}>
-          <View style={styles.chartContainer}>
-            <View style={styles.centerCircle}>
-              <Text style={styles.totalExpensesAmount}>
+        <View className="flex-row px-7 mb-6">
+          <View className="w-[120px] mr-5 relative">
+            <View className="absolute w-20 h-20 rounded-2xl bg-indigo-500 items-center justify-center">
+              <Text className="text-sm font-bold text-slate-800">
                 {formatNumber(transactionsAmounts?.expenses ?? 0)} ₲
               </Text>
-              <Text style={styles.totalExpensesLabel}>Total</Text>
+              <Text className="text-xs text-slate-500">Total</Text>
             </View>
           </View>
 
-          <View style={styles.categoriesContainer}>
+          <View className="flex-1">
             <FlatList
-              data={transactionsQuery.data?.filter(
-                transaction => transaction.type === 'expense',
-              )}
+              data={transactionsQuery.data?.filter(t => t.type === 'expense')}
               keyExtractor={item => item.id}
               scrollEnabled={false}
               renderItem={({ item }) => (
-                <View style={styles.categoryItem}>
+                <View className="flex-row items-center mb-3">
                   <View
-                    style={[styles.categoryDot, { backgroundColor: item.category.color }]}
+                    className="w-2 h-2 rounded-full mr-2"
+                    style={{ backgroundColor: item.category.color }}
                   />
-                  <Text style={styles.categoryName}>{item.category.name}</Text>
-                  <Text style={styles.categoryAmount}>{item.amount}₲</Text>
+                  <Text className="flex-1 text-sm text-start text-slate-800">
+                    {item.category.name}
+                  </Text>
+                  <Text className="text-sm text-end font-semibold text-slate-800">
+                    {item.amount}₲
+                  </Text>
                 </View>
               )}
             />
           </View>
         </View>
 
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Transacciones Recientes</Text>
+        <View className="flex-row justify-between items-center px-5 mb-4">
+          <Text className="text-lg font-semibold text-slate-800">
+            Transacciones Recientes
+          </Text>
           <TouchableOpacity onPress={() => router.push('/transactions')}>
-            <Text style={styles.seeAllText}>Ver todo</Text>
+            <Text className="text-sm text-indigo-500">Ver todo</Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.transactionsContainer}>
+        <View className="px-5">
           {transactionsQuery.data?.map(transaction => (
             <TransactionCard key={transaction.id} transaction={transaction} />
           ))}
         </View>
 
-        <View style={styles.footer} />
+        <View className="h-24" />
       </ScrollView>
 
       <TouchableOpacity
-        style={styles.floatingButton}
+        className="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-indigo-500 items-center justify-center"
         onPress={() => router.push('/(app)/transactions/new')}
         activeOpacity={0.8}
       >
         <Ionicons name="add" size={28} color="#ffffff" />
       </TouchableOpacity>
-    </SafeAreaView>
+    </AppSafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8fafc',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  greeting: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#1e293b',
-  },
-  date: {
-    fontSize: 14,
-    color: '#64748b',
-  },
-  profileButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  balanceCard: {
-    backgroundColor: '#6366f1',
-    borderRadius: 20,
-    marginHorizontal: 20,
-    marginTop: 16,
-    marginBottom: 24,
-    padding: 20,
-    shadowColor: '#6366f1',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  balanceHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  balanceTitle: {
-    fontSize: 16,
-    color: '#f8fafc',
-    opacity: 0.9,
-  },
-  balanceAmount: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 24,
-  },
-  balanceFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  balanceItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  balanceItemText: {
-    marginLeft: 12,
-  },
-  balanceItemLabel: {
-    fontSize: 14,
-    color: '#f8fafc',
-    opacity: 0.9,
-  },
-  balanceItemAmount: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  separator: {
-    width: 1,
-    height: 40,
-    backgroundColor: '#f8fafc',
-    opacity: 0.2,
-    marginHorizontal: 20,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1e293b',
-  },
-  seeAllText: {
-    fontSize: 14,
-    color: '#6366f1',
-  },
-  expensesContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginBottom: 24,
-  },
-  chartContainer: {
-    width: 120,
-    height: 120,
-    marginRight: 20,
-    position: 'relative',
-  },
-  chartImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 60,
-  },
-  centerCircle: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -40 }, { translateY: -30 }],
-    width: 80,
-    height: 80,
-    borderRadius: 30,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  totalExpensesAmount: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#1e293b',
-  },
-  totalExpensesLabel: {
-    fontSize: 12,
-    color: '#64748b',
-  },
-  categoriesContainer: {
-    flex: 1,
-  },
-  categoryItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  categoryDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  categoryName: {
-    flex: 1,
-    fontSize: 14,
-    color: '#1e293b',
-  },
-  categoryAmount: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1e293b',
-  },
-  transactionsContainer: {
-    paddingHorizontal: 20,
-  },
-
-  footer: {
-    height: 100,
-  },
-  floatingButton: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#6366f1',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#6366f1',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-})

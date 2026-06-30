@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import { View } from 'react-native'
-import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
+import { useMemo, useState } from 'react'
 import { router } from 'expo-router'
+import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 import { useTransactions } from '@/features/transactions/hooks/use-transactions'
 import { useCategoryQuery } from '@/features/setting/hooks/use-category-query'
 import { ScreenHeader } from '@/components/common/screen-header'
@@ -13,14 +12,23 @@ import {
 import { TransactionList } from '@/features/transactions/components/transaction-list'
 import { FloatingActionButton } from '@/components/ui/floating-action-button'
 import { TransactionListSkeleton } from '@/features/transactions/components/loading-skeleton'
+import { TransactionPeriod } from '@/features/transactions/actions/transaction.action'
 
 export default function TransactionsScreen() {
-  const { transactionsQuery } = useTransactions()
-  const { categoriesQuery } = useCategoryQuery()
-
   const [showFilterOptions, setShowFilterOptions] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedPeriod, setSelectedPeriod] = useState('month')
+  const [selectedPeriod, setSelectedPeriod] = useState<TransactionPeriod>('month')
+
+  const filters = useMemo(
+    () => ({
+      period: selectedPeriod,
+      categoryId: selectedCategory,
+    }),
+    [selectedPeriod, selectedCategory],
+  )
+
+  const { transactionsQuery } = useTransactions(filters)
+  const { categoriesQuery } = useCategoryQuery()
 
   const isLoading = transactionsQuery.isLoading || categoriesQuery.isLoading
 
