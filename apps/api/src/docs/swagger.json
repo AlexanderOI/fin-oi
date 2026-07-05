@@ -177,6 +177,34 @@
         ]
       }
     },
+    "/transactions/summary": {
+      "get": {
+        "operationId": "TransactionsController_getSummary",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/transactions/categories/summary": {
+      "get": {
+        "operationId": "TransactionsController_getCategorySummary",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
     "/transactions/{id}": {
       "get": {
         "operationId": "TransactionsController_findOne",

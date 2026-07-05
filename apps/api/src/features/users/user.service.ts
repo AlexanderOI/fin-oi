@@ -40,10 +40,7 @@ export class UserService {
   }
 
   async delete(id: string) {
-    const [user] = await this.drizzle.db
-      .delete(users)
-      .where(eq(users.id, id))
-      .returning()
+    const [user] = await this.drizzle.db.delete(users).where(eq(users.id, id)).returning()
 
     if (!user) throw new NotFoundException('User not found')
 

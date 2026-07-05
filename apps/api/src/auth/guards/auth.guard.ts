@@ -22,7 +22,7 @@ export class AuthGuardJwt implements CanActivate {
         secret: process.env.JWT_SECRET_ACCESS,
       })
 
-      let user = payload
+      const user = payload
       request.user = user
     } catch {
       throw new UnauthorizedException()

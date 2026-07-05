@@ -24,7 +24,9 @@ export class TransactionsService {
     return transaction
   }
 
-  private getDateRange(filters?: FindTransactionsQueryDto): { start: Date; end: Date } | null {
+  private getDateRange(
+    filters?: FindTransactionsQueryDto,
+  ): { start: Date; end: Date } | null {
     if (!filters?.period) {
       return null
     }
@@ -140,17 +142,36 @@ export class TransactionsService {
     return deletedTransaction
   }
 
-  async getTotalExpenseTransactions(userId: string) {
-    const [totalTransactions] = await this.drizzle.db
+  async getSummary(userId: string) {
+    const [incomeRow] = await this.drizzle.db
+      .select({ amount: sum(transactions.amount) })
+      .from(transactions)
+      .where(and(eq(transactions.userId, userId), eq(transactions.type, 'income')))
+
+    const [expenseRow] = await this.drizzle.db
       .select({ amount: sum(transactions.amount) })
       .from(transactions)
       .where(and(eq(transactions.userId, userId), eq(transactions.type, 'expense')))
 
-    return { _sum: { amount: totalTransactions?.amount ?? null } }
+    const income = Number(incomeRow?.amount ?? 0)
+    const expense = Number(expenseRow?.amount ?? 0)
+
+    return {
+      income,
+      expense,
+      balance: income - expense,
+    }
   }
 
-  async totalExpensePerCategory(userId: string) {
-    const totalPerCategory = await this.drizzle.db
+  async getExpenseCategorySummary(userId: string) {
+    const [totalRow] = await this.drizzle.db
+      .select({ amount: sum(transactions.amount) })
+      .from(transactions)
+      .where(and(eq(transactions.userId, userId), eq(transactions.type, 'expense')))
+
+    const totalExpense = Number(totalRow?.amount ?? 0)
+
+    const totalsPerCategory = await this.drizzle.db
       .select({
         categoryId: transactions.categoryId,
         total: sum(transactions.amount),
@@ -159,7 +180,7 @@ export class TransactionsService {
       .where(and(eq(transactions.userId, userId), eq(transactions.type, 'expense')))
       .groupBy(transactions.categoryId)
 
-    const categoryIds = totalPerCategory
+    const categoryIds = totalsPerCategory
       .map(item => item.categoryId)
       .filter((id): id is string => id !== null)
 
@@ -173,15 +194,21 @@ export class TransactionsService {
       .from(categories)
       .where(inArray(categories.id, categoryIds))
 
-    const result = totalPerCategory.map(item => {
-      const category = categoryRows.find(cat => cat.id === item.categoryId)
-      return {
-        name: category?.name || 'Desconocido',
-        icon: category?.icon || 'default',
-        color: category?.color || '#000000',
-        total: Number(item.total) || 0,
-      }
-    })
+    const result = totalsPerCategory
+      .map(item => {
+        const category = categoryRows.find(cat => cat.id === item.categoryId)
+        const amount = Number(item.total) || 0
+
+        return {
+          id: item.categoryId ?? 'unknown',
+          name: category?.name || 'Desconocido',
+          icon: category?.icon || 'help-circle-outline',
+          color: category?.color || '#64748b',
+          amount,
+          percentage: totalExpense > 0 ? Math.round((amount / totalExpense) * 100) : 0,
+        }
+      })
+      .sort((a, b) => b.amount - a.amount)
 
     return result
   }

@@ -32,6 +32,16 @@ export class TransactionsController {
     return this.transactionsService.findAll(user.id, query)
   }
 
+  @Get('summary')
+  getSummary(@User() user: UserAuth) {
+    return this.transactionsService.getSummary(user.id)
+  }
+
+  @Get('categories/summary')
+  getCategorySummary(@User() user: UserAuth) {
+    return this.transactionsService.getExpenseCategorySummary(user.id)
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string, @User() user: UserAuth) {
     return this.transactionsService.findOne(id, user.id)

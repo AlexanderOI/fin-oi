@@ -1,11 +1,5 @@
 import { relations } from 'drizzle-orm'
-import {
-  boolean,
-  doublePrecision,
-  pgTable,
-  text,
-  timestamp,
-} from 'drizzle-orm/pg-core'
+import { boolean, doublePrecision, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('User', {
   id: text('id')
