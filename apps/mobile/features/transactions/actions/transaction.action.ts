@@ -1,3 +1,5 @@
+import { Ionicons } from '@expo/vector-icons'
+
 import { apiClient } from '@/lib/api-client'
 import { Transaction } from '@/features/transactions/interfaces/transaction.interface'
 
@@ -58,5 +60,30 @@ export const updateTransaction = async (
 
 export const deleteTransaction = async (id: string) => {
   const { data } = await apiClient.delete<Transaction>(`/transactions/${id}`)
+  return data
+}
+
+export interface TransactionsSummary {
+  income: number
+  expense: number
+  balance: number
+}
+
+export const getTransactionsSummary = async () => {
+  const { data } = await apiClient.get<TransactionsSummary>('/transactions/summary')
+  return data
+}
+
+export interface ExpenseCategorySummary {
+  id: string
+  name: string
+  amount: number
+  percentage: number
+  color: string
+  icon: keyof typeof Ionicons.glyphMap
+}
+
+export const getExpenseCategories = async () => {
+  const { data } = await apiClient.get<ExpenseCategorySummary[]>('/transactions/categories/summary')
   return data
 }

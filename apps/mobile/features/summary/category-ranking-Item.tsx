@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+
+import { formatNumber } from '@/lib/format-number'
 import { CategoryRanking } from '../transactions/interfaces/category.interfaces'
 
 interface Props {
@@ -8,95 +10,33 @@ interface Props {
 }
 
 export const CategoryRankingItem = ({ category, index }: Props) => (
-  <View style={styles.rankingItem}>
-    <View style={styles.rankingPosition}>
-      <Text style={styles.positionText}>{index + 1}</Text>
+  <View className="flex-row items-center py-3 border-b border-slate-100">
+    <View className="w-6 h-6 rounded-full bg-slate-100 items-center justify-center mr-3">
+      <Text className="text-xs font-semibold text-slate-500">{index + 1}</Text>
     </View>
 
-    <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
+    <View
+      className="w-7 h-7 rounded-lg items-center justify-center mr-3"
+      style={{ backgroundColor: category.color }}
+    >
       <Ionicons name={category.icon} size={16} color="#ffffff" />
     </View>
 
-    <View style={styles.rankingInfo}>
-      <Text style={styles.rankingName}>{category.name}</Text>
-      <View style={styles.percentageContainer}>
+    <View className="mr-3" style={{ flex: 1 }}>
+      <Text className="text-sm font-medium text-slate-800 mb-1">{category.name}</Text>
+      <View className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
         <View
-          style={[
-            styles.percentageBar,
-            { width: `${category.percentage}%`, backgroundColor: category.color },
-          ]}
+          className="h-full rounded-full"
+          style={{ width: `${category.percentage}%`, backgroundColor: category.color }}
         />
       </View>
     </View>
 
-    <View style={styles.rankingAmount}>
-      <Text style={styles.rankingAmountText}>{category.amount}€</Text>
-      <Text style={styles.rankingPercentText}>{category.percentage}%</Text>
+    <View className="items-end">
+      <Text className="text-sm font-semibold text-slate-800">
+        {formatNumber(category.amount)} ₲
+      </Text>
+      <Text className="text-xs text-slate-500">{category.percentage}%</Text>
     </View>
   </View>
 )
-
-const styles = StyleSheet.create({
-  rankingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
-  },
-  rankingPosition: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#f1f5f9',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  positionText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#64748b',
-  },
-  categoryIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  rankingInfo: {
-    flex: 1,
-    marginRight: 12,
-  },
-  rankingName: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#1e293b',
-    marginBottom: 4,
-  },
-
-  percentageContainer: {
-    height: 6,
-    backgroundColor: '#f1f5f9',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  percentageBar: {
-    height: '100%',
-    borderRadius: 3,
-  },
-  rankingAmount: {
-    alignItems: 'flex-end',
-  },
-  rankingAmountText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1e293b',
-  },
-  rankingPercentText: {
-    fontSize: 12,
-    color: '#64748b',
-  },
-})
