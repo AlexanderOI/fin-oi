@@ -8,33 +8,34 @@ import {
   UpdateCategoryDto,
   deleteCategory,
 } from '@/features/setting/services/category.services'
+import { categoryKeys } from '@/features/transactions/lib/query-keys'
 
 export const useCategoryQuery = (id?: string) => {
   const queryClient = useQueryClient()
 
   const categoriesQuery = useQuery({
-    queryKey: ['categories'],
+    queryKey: categoryKeys.all,
     queryFn: getAllCategories,
   })
 
   const categoryQuery = useQuery({
-    queryKey: ['category', id],
+    queryKey: categoryKeys.detail(id),
     queryFn: () => getCategoryById(id),
     enabled: !!id,
   })
 
   const handlePrefetchCategory = (id: string) => {
     queryClient.prefetchQuery({
-      queryKey: ['category', id],
+      queryKey: categoryKeys.detail(id),
       queryFn: () => getCategoryById(id),
     })
   }
 
   const invalidateCategoriesQuery = async (categoryId?: string) => {
-    await queryClient.invalidateQueries({ queryKey: ['categories'] })
+    await queryClient.invalidateQueries({ queryKey: categoryKeys.all })
     const detailId = categoryId ?? id
     if (detailId) {
-      await queryClient.invalidateQueries({ queryKey: ['category', detailId] })
+      await queryClient.invalidateQueries({ queryKey: categoryKeys.detail(detailId) })
     }
   }
 

@@ -7,19 +7,22 @@ import {
   updateTransaction,
   UpdateTransactionProps,
 } from '@/features/transactions/actions/transaction.action'
+import { transactionKeys } from '@/features/transactions/lib/query-keys'
 
 export const useTransaction = (id?: string) => {
   const queryClient = useQueryClient()
 
   const transactionQuery = useQuery({
-    queryKey: ['transaction', id],
+    queryKey: transactionKeys.detail(id),
     queryFn: () => getTransactionById(id),
     enabled: !!id,
   })
 
   const invalidateTransactionQuery = () => {
-    queryClient.invalidateQueries({ queryKey: ['transaction', id] })
-    queryClient.invalidateQueries({ queryKey: ['transactions'] })
+    queryClient.invalidateQueries({ queryKey: transactionKeys.detail(id) })
+    queryClient.invalidateQueries({ queryKey: transactionKeys.all })
+    queryClient.invalidateQueries({ queryKey: transactionKeys.summary() })
+    queryClient.invalidateQueries({ queryKey: transactionKeys.categories() })
   }
 
   const createTransactionMutation = useMutation({

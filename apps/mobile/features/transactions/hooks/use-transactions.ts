@@ -5,10 +5,11 @@ import {
   getExpenseCategories,
   TransactionFilters,
 } from '@/features/transactions/actions/transaction.action'
+import { transactionKeys } from '@/features/transactions/lib/query-keys'
 
 export const useTransactions = (filters: TransactionFilters = {}) => {
   const transactionsQuery = useQuery({
-    queryKey: ['transactions', filters],
+    queryKey: transactionKeys.list(filters),
     queryFn: () => getTransactions(filters),
   })
 
@@ -19,7 +20,7 @@ export const useTransactions = (filters: TransactionFilters = {}) => {
 
 export const useTransactionsSummary = () => {
   const summaryQuery = useQuery({
-    queryKey: ['transactions-summary'],
+    queryKey: transactionKeys.summary(),
     queryFn: () => getTransactionsSummary(),
   })
 
@@ -28,7 +29,7 @@ export const useTransactionsSummary = () => {
 
 export const useExpenseCategories = () => {
   const categoriesQuery = useQuery({
-    queryKey: ['expense-categories'],
+    queryKey: transactionKeys.categories(),
     queryFn: () => getExpenseCategories(),
   })
 
