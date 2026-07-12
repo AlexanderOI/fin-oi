@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Toaster } from 'sonner-native'
-import { StyleSheet, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 import '../global.css'
 import { useEffect, useState } from 'react'
@@ -38,7 +38,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
-        <SafeAreaProvider style={styles.container}>
+        <SafeAreaProvider style={{ flex: 1 }} className="select-none">
           <Toaster />
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(auth)" />
@@ -50,9 +50,3 @@ export default function RootLayout() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    userSelect: 'none',
-  },
-})

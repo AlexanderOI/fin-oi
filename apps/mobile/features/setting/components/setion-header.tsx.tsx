@@ -1,23 +1,11 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 
 interface Props {
   title: string
 }
 
 export const SectionHeader = ({ title }: Props) => (
-  <View style={styles.sectionHeader}>
-    <Text style={styles.sectionTitle}>{title}</Text>
+  <View className="px-5 py-3">
+    <Text className="text-base font-semibold text-primary">{title}</Text>
   </View>
 )
-
-const styles = StyleSheet.create({
-  sectionHeader: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#6366f1',
-  },
-})

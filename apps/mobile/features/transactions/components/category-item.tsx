@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { Category } from '@/features/setting/interfaces/category.interface'
+import { cn } from '@/lib/cn'
 
 interface Props {
   category: Category
@@ -10,51 +11,21 @@ interface Props {
 
 export const CategoryItem = ({ category, isSelected, onSelect }: Props) => (
   <TouchableOpacity
-    style={[
-      styles.categoryItem,
-      isSelected && {
-        backgroundColor: `${category.color}20`,
-        borderColor: category.color,
-      },
-    ]}
+    className={cn(
+      'items-center mr-4 p-3 rounded-xl border border-slate-200 bg-white w-[100px]',
+      isSelected && 'border-transparent',
+    )}
+    style={isSelected ? { backgroundColor: `${category.color}20`, borderColor: category.color } : undefined}
     onPress={() => onSelect()}
   >
-    <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
+    <View className="w-12 h-12 rounded-full items-center justify-center mb-2" style={{ backgroundColor: category.color }}>
       <Ionicons name={category.icon} size={24} color="#ffffff" />
     </View>
     <Text
-      style={[
-        styles.categoryName,
-        isSelected && { color: category.color, fontWeight: '500' },
-      ]}
+      className={cn('text-xs text-slate-500 text-center', isSelected && 'font-medium')}
+      style={isSelected ? { color: category.color } : undefined}
     >
       {category.name}
     </Text>
   </TouchableOpacity>
 )
-
-const styles = StyleSheet.create({
-  categoryItem: {
-    alignItems: 'center',
-    marginRight: 16,
-    padding: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#ffffff',
-    width: 100,
-  },
-  categoryIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-  },
-  categoryName: {
-    fontSize: 12,
-    color: '#64748b',
-    textAlign: 'center',
-  },
-})

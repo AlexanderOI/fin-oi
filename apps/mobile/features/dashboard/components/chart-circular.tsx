@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { Category } from '../../transactions/interfaces/category.interfaces'
 
 interface Props {
@@ -16,8 +16,8 @@ export const PieChartSegment = ({ category, total, index, segments }: Props) => 
 
   return (
     <View
+      className="absolute left-0 top-0"
       style={[
-        styles.pieSegment,
         {
           backgroundColor: category.color,
           transform: [
@@ -38,10 +38,3 @@ export const PieChartSegment = ({ category, total, index, segments }: Props) => 
   )
 }
 
-const styles = StyleSheet.create({
-  pieSegment: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
-  },
-})

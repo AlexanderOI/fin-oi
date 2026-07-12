@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
+import { TouchableOpacity, Text, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -23,14 +23,14 @@ export function DataPicker({ value, onChange }: Props) {
 
   return (
     <View>
-      <TouchableOpacity style={styles.dateSelector} onPress={() => setShowPicker(true)}>
+      <TouchableOpacity className="flex-row items-center bg-white rounded-xl p-4 border border-slate-200" onPress={() => setShowPicker(true)}>
         <Ionicons
           name="calendar-outline"
           size={20}
           color="#64748b"
-          style={styles.dateIcon}
+          className="mr-3"
         />
-        <Text style={styles.dateText}>{formatDate(value)}</Text>
+        <Text style={{ flex: 1 }} className="text-base text-slate-800">{formatDate(value)}</Text>
         <Ionicons name="chevron-down-outline" size={16} color="#64748b" />
       </TouchableOpacity>
       {showPicker && (
@@ -45,22 +45,3 @@ export function DataPicker({ value, onChange }: Props) {
   )
 }
 
-const styles = StyleSheet.create({
-  dateSelector: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  dateIcon: {
-    marginRight: 12,
-  },
-  dateText: {
-    flex: 1,
-    fontSize: 16,
-    color: '#1e293b',
-  },
-})

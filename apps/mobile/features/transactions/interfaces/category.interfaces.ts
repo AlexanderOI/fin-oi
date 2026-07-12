@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Transaction } from './transaction.interface'
 
 export interface Category {
   id: string
@@ -18,7 +17,7 @@ export interface CategoryRanking {
   icon: keyof typeof Ionicons.glyphMap
 }
 
-export const transactionsData: Transaction[] = [
+export const transactionsData = [
   {
     id: '1',
     category: 'Alimentación',

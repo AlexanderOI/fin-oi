@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, Dimensions } from 'react-native'
 
 interface BarChartProps {
   data: {
@@ -18,32 +18,26 @@ export const BarChart = ({ data }: BarChartProps) => {
   }
 
   return (
-    <View style={styles.barChartContainer}>
-      <View style={styles.barChart}>
+    <View className="h-[280px]">
+      <View className="h-[220px] flex-row items-end justify-between pt-5">
         {data.map((item, index) => (
-          <View key={index} style={styles.barGroup}>
-            <View style={styles.barLabelContainer}>
-              <Text style={styles.barLabel}>{item.month}</Text>
+          <View key={index} style={{ flex: 1 }} className="items-center">
+            <View className="absolute bottom-0 w-full items-center">
+              <Text className="text-xs text-slate-500 mt-1.5">{item.month}</Text>
             </View>
 
-            <View style={styles.barsContainer}>
-              <View style={styles.barItem}>
+            <View className="flex-row items-end h-full">
+              <View style={{ width: (windowWidth - 140) / (6 * 3) }} className="mx-0.5 items-center">
                 <View
-                  style={[
-                    styles.bar,
-                    styles.incomeBar,
-                    { height: getBarHeight(item.income) },
-                  ]}
+                  className="w-full rounded-t bg-lime-500"
+                  style={{ height: getBarHeight(item.income) }}
                 />
               </View>
 
-              <View style={styles.barItem}>
+              <View style={{ width: (windowWidth - 140) / (6 * 3) }} className="mx-0.5 items-center">
                 <View
-                  style={[
-                    styles.bar,
-                    styles.expensesBar,
-                    { height: getBarHeight(item.expenses) },
-                  ]}
+                  className="w-full rounded-t bg-rose-500"
+                  style={{ height: getBarHeight(item.expenses) }}
                 />
               </View>
             </View>
@@ -51,87 +45,17 @@ export const BarChart = ({ data }: BarChartProps) => {
         ))}
       </View>
 
-      <View style={styles.chartLegend}>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: '#84cc16' }]} />
-          <Text style={styles.legendText}>Ingresos</Text>
+      <View className="flex-row justify-center mt-5">
+        <View className="flex-row items-center mx-2.5">
+          <View className="w-3 h-3 rounded-full mr-1.5 bg-lime-500" />
+          <Text className="text-xs text-slate-500">Ingresos</Text>
         </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: '#f43f5e' }]} />
-          <Text style={styles.legendText}>Gastos</Text>
+        <View className="flex-row items-center mx-2.5">
+          <View className="w-3 h-3 rounded-full mr-1.5 bg-rose-500" />
+          <Text className="text-xs text-slate-500">Gastos</Text>
         </View>
       </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  barChartContainer: {
-    height: 280,
-  },
-  barChart: {
-    height: 220,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingTop: 20,
-  },
-
-  incomeBar: {
-    backgroundColor: '#84cc16',
-  },
-  expensesBar: {
-    backgroundColor: '#f43f5e',
-  },
-
-  barGroup: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  barLabelContainer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    alignItems: 'center',
-  },
-  barLabel: {
-    fontSize: 12,
-    color: '#64748b',
-    marginTop: 6,
-  },
-  barsContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    height: '100%',
-  },
-  barItem: {
-    width: (windowWidth - 140) / (6 * 3), // TODO: cambiar a monthlyData.length
-    marginHorizontal: 2,
-    alignItems: 'center',
-  },
-  bar: {
-    width: '100%',
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-  },
-  chartLegend: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 10,
-  },
-  legendDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 6,
-  },
-  legendText: {
-    fontSize: 12,
-    color: '#64748b',
-  },
-})
