@@ -83,7 +83,7 @@ export default function RegisterScreen() {
         data.username,
         data.email,
         data.password,
-        data.confirmPassword,
+        data.username,
       )
 
       if (!response) return
