@@ -3,14 +3,14 @@ import { router } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 
 import { formatNumber } from '@/lib/format-number'
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { TransactionCard } from '@/features/transactions/components/transaction-card'
 import {
   useTransactions,
   useTransactionsSummary,
   useExpenseCategories,
 } from '@/features/transactions/hooks/use-transactions'
-import { CategoryRankingItem } from '@/features/summary/category-ranking-Item'
+import { CategoryRankingItem } from '@/features/summary/category-ranking-item'
 import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 
 const date = new Date().toLocaleDateString('es-ES', {

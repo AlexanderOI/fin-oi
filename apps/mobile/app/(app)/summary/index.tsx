@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import { BarChart } from '@/features/summary/bar-chart'
-import { CategoryRankingItem } from '@/features/summary/category-ranking-Item'
+import { CategoryRankingItem } from '@/features/summary/category-ranking-item'
 import { MonthlyData } from '@/features/dashboard/interface/data.interface'
 import { ScreenHeader } from '@/components/common/screen-header'
 import { AppSafeAreaView } from '@/components/common/app-safe-area-view'

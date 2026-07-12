@@ -7,7 +7,7 @@ import '../global.css'
 import { useEffect, useState } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const queryClient = new QueryClient()

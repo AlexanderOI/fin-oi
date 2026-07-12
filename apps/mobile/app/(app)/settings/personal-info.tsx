@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useUpdateProfile } from '@/features/users/hooks/use-update-profile'
 import { AppSafeAreaView } from '@/components/common/app-safe-area-view'
 import { ScreenHeader } from '@/components/common/screen-header'

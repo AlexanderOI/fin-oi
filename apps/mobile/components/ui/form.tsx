@@ -9,7 +9,7 @@ import {
   FormProvider,
   useFormContext,
 } from 'react-hook-form'
-import { Colors } from '@/constants/Colors'
+import { Colors } from '@/constants/colors'
 import { cn } from '@/lib/cn'
 
 // Contextos

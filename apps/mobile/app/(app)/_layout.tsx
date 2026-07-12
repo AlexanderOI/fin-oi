@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { router, Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { IconName } from '@/global'
 
 export default function AppLayout() {

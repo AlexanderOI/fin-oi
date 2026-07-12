@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Header } from '@/features/auth/components/header'

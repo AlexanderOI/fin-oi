@@ -1,5 +1,5 @@
 import { TextInput, TextInputProps } from 'react-native'
-import { Colors } from '@/constants/Colors'
+import { Colors } from '@/constants/colors'
 import { cn } from '@/lib/cn'
 
 export function Input({ className, placeholderTextColor, ...props }: TextInputProps) {

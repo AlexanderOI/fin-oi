@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { router, Stack } from 'expo-router'
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 
 export default function AuthLayout() {
   const { user } = useAuth()

@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, Switch, Image } from 'react-n
 import { router } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { SettingItem } from '@/features/setting/components/setting-item'
 import { SectionHeader } from '@/features/setting/components/setion-header.tsx'
 
