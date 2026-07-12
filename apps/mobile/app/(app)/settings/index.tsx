@@ -18,7 +18,10 @@ export default function SettingsScreen() {
           <Text className="text-2xl font-bold text-slate-800">Ajustes</Text>
         </View>
 
-        <TouchableOpacity className="flex-row items-center bg-white mx-5 my-4 p-4 rounded-2xl shadow-sm elevation-2">
+        <TouchableOpacity
+          onPress={() => router.push('/settings/personal-info')}
+          className="flex-row items-center bg-white mx-5 my-4 p-4 rounded-2xl shadow-sm elevation-2"
+        >
           <Image
             source={require('@/assets/images/avatar.png')}
             className="w-[60px] h-[60px] rounded-full mr-4"
@@ -33,10 +36,11 @@ export default function SettingsScreen() {
         <SectionHeader title="Cuenta" />
         <View className="bg-white rounded-2xl mx-5 mb-6 shadow-sm elevation-2 overflow-hidden">
           <SettingItem
+            onPress={() => router.push('/settings/personal-info')}
             icon="person-outline"
             iconColor="#6366f1"
             title="Información personal"
-            description="Nombre, email, contraseña"
+            description="Nombre, usuario, email"
           />
           {/* <SettingItem
             icon="card-outline"

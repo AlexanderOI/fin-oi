@@ -1,9 +1,14 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator'
+import { IsBoolean, IsOptional, IsString, Matches } from 'class-validator'
 
 export class UpdateUserDto {
   @IsString()
   @IsOptional()
   name: string
+
+  @IsString()
+  @IsOptional()
+  @Matches(/^\S*$/)
+  username: string
 
   @IsString()
   @IsOptional()

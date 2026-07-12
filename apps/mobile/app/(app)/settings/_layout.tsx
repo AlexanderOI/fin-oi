@@ -14,6 +14,16 @@ export default function SettingsLayout() {
         }}
       />
       <Stack.Screen
+        name="personal-info"
+        options={{
+          title: 'Información personal',
+          headerStyle: {
+            backgroundColor: '#ffffff',
+          },
+          headerTintColor: '#6366f1',
+        }}
+      />
+      <Stack.Screen
         name="category/index"
         options={{
           title: 'Categorías',
